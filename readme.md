@@ -1,0 +1,1 @@
+1. bash.png - (https://mxgroup.ru/upload/bash.png)
