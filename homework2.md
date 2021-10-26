@@ -1,4 +1,5 @@
 1. Создали файл, проверили статус git status. 
+
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git status
 	On branch master
 	Your branch is up to date with 'origin/master'.
@@ -11,6 +12,7 @@
 
 2. Добавили в файл изменения. Добавили файл в состояние staged. git add *
 Проверяем вывод git diff --staged
+
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git diff --staged
 	diff --git a/homework2.md b/homework2.md
 	new file mode 100644
@@ -33,6 +35,7 @@
 	\ No newline at end of file
 
 3. Делаем первый коммит. git commit -m 'First commit'
+
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git commit -m 'First commit'
 	[master e192339] First commit
 	Committer: Alexander Myagkikh <kvazik@myagkikh.mxgroup.loc>
@@ -41,6 +44,7 @@
 	create mode 100644 homework2.md
 	
 4. Создаем файл .gitignore, добавляем его в коммит. 
+
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git add .gitignore
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git status
 	On branch master
@@ -59,6 +63,7 @@
 	create mode 100644 .gitignore
 	
 5. Добавляем папку terraform, добавялем в него дефолтный .gitignore и readme с описанием файлов, которые будут проигнорированы. Делаем коммит. 
+	
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git add *
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git status
 	On branch master
@@ -81,6 +86,7 @@
 6. Создаем пару файлов и коммитим их для экспериментов с добавлением\удалением файлов из репозитория.
 
 7. Удаляем файл will_be_deleted, переименовываем файл will_be_moved. Добавляем все в коммит.
+	
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git rm will_be_deleted.txt
 	rm 'will_be_deleted.txt'
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git status
@@ -114,6 +120,7 @@
 			deleted:    will_be_moved.txt
 			
 8. Проверяем что мы наделали через git log  
+
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git log >> git.log
 	commit 214a5d1d2b1a5ec682083fda78187f9a1f455ec0 (HEAD -> master)
 	Author: Alexander Myagkikh <kvazik@myagkikh.mxgroup.loc>
