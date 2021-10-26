@@ -79,35 +79,42 @@
 	create mode 100644 terraform/readme.md
 	
 6. Создаем пару файлов и коммитим их для экспериментов с добавлением\удалением файлов из репозитория.
-	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git commit
-	[master 95739d7] Prepare to delete and move
- 
-	3 files changed, 81 insertions(+), 12 deletions(-)
-	rewrite homework2.md (83%)
-	create mode 100644 will_be_deleted.txt
-	create mode 100644 will_de_moved.txt
 
-7. Удаляем файл will_be_deleted, переименовываем файл will_de_moved. Добавляем все в коммит.
-	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git add *
-	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git rm *
-Смотрим вывод git status
+7. Удаляем файл will_be_deleted, переименовываем файл will_be_moved. Добавляем все в коммит.
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git rm will_be_deleted.txt
+	rm 'will_be_deleted.txt'
 	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git status
 	On branch master
 	Your branch is ahead of 'origin/master' by 1 commit.
 	(use "git push" to publish your local commits)
 
-	Changes to be committed:
+		Changes to be committed:
 	(use "git restore --staged <file>..." to unstage)
-			new file:   has_been_moved.txt
+			deleted:    will_be_deleted.txt
 
-	Changes not staged for commit:
+		Changes not staged for commit:
 	(use "git add/rm <file>..." to update what will be committed)
 	(use "git restore <file>..." to discard changes in working directory)
-			deleted:    will_be_deleted.txt
-			deleted:    will_de_moved.txt
+			deleted:    will_be_moved.txt
+
+		Untracked files:
+	(use "git add <file>..." to include in what will be committed)
+			has_been_moved.txt
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git rm will_be_moved.txt
+	rm 'will_be_moved.txt'
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git add *
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git status
+		On branch master
+	Your branch is ahead of 'origin/master' by 1 commit.
+	(use "git push" to publish your local commits)
+
+	Changes to be committed:
+	(use "git restore --staged <file>..." to unstage)
+			renamed:    will_be_deleted.txt -> has_been_moved.txt
+			deleted:    will_be_moved.txt
 			
-8. Проверяем что мы наделали через git log
-	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git log
+8. Проверяем что мы наделали через git log  
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git log >> git.log
 	commit 214a5d1d2b1a5ec682083fda78187f9a1f455ec0 (HEAD -> master)
 	Author: Alexander Myagkikh <kvazik@myagkikh.mxgroup.loc>
 	Date:   Tue Oct 26 11:59:03 2021 +1000
