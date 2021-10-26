@@ -77,3 +77,65 @@
 	2 files changed, 45 insertions(+)
 	create mode 100644 terraform/.gitignore
 	create mode 100644 terraform/readme.md
+	
+6. Создаем пару файлов и коммитим их для экспериментов с добавлением\удалением файлов из репозитория.
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git commit
+	[master 95739d7] Prepare to delete and move
+ 
+	3 files changed, 81 insertions(+), 12 deletions(-)
+	rewrite homework2.md (83%)
+	create mode 100644 will_be_deleted.txt
+	create mode 100644 will_de_moved.txt
+
+7. Удаляем файл will_be_deleted, переименовываем файл will_de_moved. Добавляем все в коммит.
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git add *
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git rm *
+Смотрим вывод git status
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git status
+	On branch master
+	Your branch is ahead of 'origin/master' by 1 commit.
+	(use "git push" to publish your local commits)
+
+	Changes to be committed:
+	(use "git restore --staged <file>..." to unstage)
+			new file:   has_been_moved.txt
+
+	Changes not staged for commit:
+	(use "git add/rm <file>..." to update what will be committed)
+	(use "git restore <file>..." to discard changes in working directory)
+			deleted:    will_be_deleted.txt
+			deleted:    will_de_moved.txt
+			
+8. Проверяем что мы наделали через git log
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git log
+	commit 214a5d1d2b1a5ec682083fda78187f9a1f455ec0 (HEAD -> master)
+	Author: Alexander Myagkikh <kvazik@myagkikh.mxgroup.loc>
+	Date:   Tue Oct 26 11:59:03 2021 +1000
+
+		Moved and deleted
+
+	commit 95739d7eaea2e54be9f93822bc8689ab66ddaeaf
+	Author: Alexander Myagkikh <kvazik@myagkikh.mxgroup.loc>
+	Date:   Tue Oct 26 11:52:21 2021 +1000
+
+		Prepare to delete and move
+
+	commit 71ee4f8611b5ac37b6c79809c5ea476009c7f32a (origin/master, origin/HEAD)
+	Author: Alexander Myagkikh <kvazik@myagkikh.mxgroup.loc>
+	Date:   Tue Oct 26 11:46:45 2021 +1000
+
+		Added terraform gitignore + readme with description
+
+	commit 72f6cd29d323c41471a37d53d4819e31eb4357eb
+	Author: Alexander Myagkikh <kvazik@myagkikh.mxgroup.loc>
+	Date:   Tue Oct 26 11:33:09 2021 +1000
+
+		Added .gitignore
+
+	commit e192339a6b6d9925741d1db8f0bdefa58169b02c
+	Author: Alexander Myagkikh <kvazik@myagkikh.mxgroup.loc>
+	Date:   Tue Oct 26 11:27:52 2021 +1000
+
+		First commit
+		
+9. Пушим все что наделали в репозиторий. 
