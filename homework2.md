@@ -84,6 +84,24 @@
 	create mode 100644 terraform/readme.md
 	
 6. Создаем пару файлов и коммитим их для экспериментов с добавлением\удалением файлов из репозитория.
+	
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git add *
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git status
+	On branch master
+	Your branch is up to date with 'origin/master'.
+
+	Changes to be committed:
+	  (use "git restore --staged <file>..." to unstage)
+			new file:   will_be_deleted.txt
+			new file:   will_be_moved.txt
+
+	kvazik@myagkikh:/mnt/c/gmsolaris/study$ git commit
+	[master def2fe4] Added two files do delete move
+	
+	 2 files changed, 0 insertions(+), 0 deletions(-)
+	 create mode 100644 will_be_deleted.txt
+	 create mode 100644 will_be_moved.txt
+
 
 7. Удаляем файл will_be_deleted, переименовываем файл will_be_moved. Добавляем все в коммит.
 	
