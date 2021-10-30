@@ -27,3 +27,13 @@ origin  git@github.com:GMsolaris/study.git (push)
 №3.2
 
 1. Добавляем два тега к коммиту и пушим в три upstream.
+
+```
+kvazik@kvazik-matebook:/mnt/c/gmsolaris/study$ git tag v0.0 -m "tag 0"
+kvazik@kvazik-matebook:/mnt/c/gmsolaris/study$ git tag
+v0.0
+kvazik@kvazik-matebook:/mnt/c/gmsolaris/study$ git tag -a v0.1 -m "tag 1"
+kvazik@kvazik-matebook:/mnt/c/gmsolaris/study$ git tag
+v0.0
+v0.1
+```
