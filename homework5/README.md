@@ -118,6 +118,8 @@ fd4f7eb0b remove prefixed io
 5ac311e2a main: synchronize writes to VT100-faker on Windows 
 
 myagkikh@KvaziK:/mnt/c/kvazik/terraform$ git show 5ac311e2a 
-commit 5ac311e2a91e381e2f52234668b49ba670aa0fe5 Author: Martin Atkins <mart@degeneration.co.uk> Date: Wed May 3 16:25:41 2017 -0700 
+commit 5ac311e2a91e381e2f52234668b49ba670aa0fe5
+Author: Martin Atkins <mart@degeneration.co.uk>
+Date: Wed May 3 16:25:41 2017 -0700 
 ```
 Автор функции, если принять за автора того, кто её первым создал является Martin Atkins 
