@@ -54,11 +54,11 @@ d5f9411f5 command: Fix bug when using terraform login on Windows
 225466bc3 Cleanup after v0.12.23 release 
 ```
 Хеши коммитов между тегами 
-225466bc3
-dd01a3507
-d5f9411f5
-6ae64e247
-3f235065b
+* 225466bc3
+* dd01a3507
+* d5f9411f5
+* 6ae64e247
+* 3f235065b
 
 5. Найдите коммит в котором была создана функция func providerSource, ее определение в коде выглядит так func providerSource(...) (вместо троеточего перечислены аргументы).
 ```
