@@ -26,7 +26,8 @@ index 86d70e3e0..588d807b1 100644
 
 2. Какому тегу соответствует коммит 85024d3?
 ```
-myagkikh@KvaziK:/mnt/c/kvazik/terraform$ git show 85024d3 commit 85024d3100126de36331c6982bfaac02cdab9e76 (tag: v0.12.23) 
+myagkikh@KvaziK:/mnt/c/kvazik/terraform$ git show 85024d3 
+commit 85024d3100126de36331c6982bfaac02cdab9e76 (tag: v0.12.23) 
 ```
 Коммит соответствует тегу v0.12.23
 
