@@ -105,6 +105,11 @@ myagkikh@KvaziK:/mnt/c/kvazik/terraform$ git log -S globalPluginDirs --oneline
  8364383c3 Push plugin discovery down into command package 
 ```
 
+Коммиты где менялась функция globalPluginDirs
+* 35a058fb3
+* c0b176109
+* 8364383c3
+
 7. Кто автор функции synchronizedWriters
 ```
 myagkikh@KvaziK:/mnt/c/kvazik/terraform$ git log -S synchronizedWriters --oneline 
