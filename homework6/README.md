@@ -135,6 +135,14 @@ touch {1..100000}.txt
  Conditional operators such as -f must be unquoted to be recognized as primaries.
  When used with [[, the < and > operators sort lexicographically using the current locale
  
+Своими словами данная команда проверяет наличие директории по указанному пути, и в случае наличия возвращает 1, в противном 0. Пример использования простой bash скрипт.
+```
+kvazik@myagkikh:/mnt/c/gmsolaris/study$ if [[ -d /tmp ]];then echo "folder exist"; else echo "folder not found"; fi
+     folder exist	 
+kvazik@myagkikh:/mnt/c/gmsolaris/study$ if [[ -d /tmp2 ]];then echo "folder exist"; else echo "folder not found"; fi
+     folder not found                                
+```
+ 
  12. Добавляем путь. Для этого редактируем файл
  ```
  # ~/.bashrc: executed by bash(1) for non-login shells.
