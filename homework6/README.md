@@ -5,9 +5,10 @@
 Устанавливаем vagrant, virtualbox. Отключаем стоковый гипервизор в win10 перезапускаемся.
 
 4. Меняем конифиг 
-
+```
 Vagrant.configure("2") do |config|
   config.vm.box = "debian/buster64"
+```
   
 Запускаем vagrant up
 
