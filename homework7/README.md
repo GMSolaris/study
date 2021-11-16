@@ -1,0 +1,70 @@
+1. Команда cd это встроенная в оболочку команда buidin shell. Команда такая как и должна быть.
+ Она используется для первоначальной навигации по папкам, для её вызова не должно быть никаких препятствий и дополнительно настроенных процедурных команд и тд. Команды встроенные в оболочку это фундамент терминала.
+
+2. grep shell README.md выведет те строки, в которых  найдется искомое слово shell, в данный момент решения дз в файле README.md это одна строка.
+```
+myagkikh@KvaziK:/mnt/c/kvazik/study/homework7$ grep shell README.md
+1. Команда cd это встроенная в оболочку команда buidin shell. Команда такая как и должна быть.    
+```
+Далее если использовать pipe и передать это в команду wc -l, которая считает кол-во строк в файле, то получим значение '1.'
+В принципе конечно можно использовать такое выражение, но это относится к usless use. Гораздо проще заменить это конструкцией 
+```
+myagkikh@KvaziK:/mnt/c/kvazik/study/homework7$ grep -c shell README.md                                                  
+1         
+```
+3. Поскольку привычнее всего пользоваться для работы с процессами утилитой htop опишу действия в ней. Процесс с pid 1 это процесс init.
+ Это основной, первоначальный процесс, который запускает собственно всю остальную систему и процессы.
+ Как видно ниже, все процессы идут потомками от первоначального, включая запущенный терминал под пользователем и запущенный в терминале htop.
+```
+  PID△USER      PRI  NI  VIRT   RES   SHR S CPU% MEM%   TIME+  Command
+  1 root       20   0   900   528   464 S  0.0  0.0  0:00.01 /init
+  6 root       20   0   900   528   464 S  0.0  0.0  0:00.00 ├─ /init
+  7 root       20   0   900    84    20 S  0.0  0.0  0:00.00 └─ /init
+  8 root       20   0   900    84    20 S  0.7  0.0  0:00.09    └─ /init
+  9 myagkikh   20   0  7204  3864  3284 S  0.0  0.0  0:00.08       └─ -bash
+  224 myagkikh   20   0  8084  4084  3424 R  0.0  0.0  0:00.05          └─ htop     
+  ```
+  
+ 4. Для тестирования данной задачи запустим дополнительный терминал. Для этого откроем еще одну сессию в powershell и прицепимся к нашему wsl debian. 
+ ```
+ PS C:\Windows\System32\WindowsPowerShell\v1.0> ssh myagkikh@172.18.184.107
+ myagkikh@172.18.184.107's password:
+ Linux KvaziK 5.10.16.3-microsoft-standard-WSL2 #1 SMP Fri Apr 2 22:23:49 UTC 2021 x86_64
+ The programs included with the Debian GNU/Linux system are free software;
+ the exact distribution terms for each program are described in the
+ individual files in /usr/share/doc/*/copyright.
+ Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+ permitted by applicable law.
+```
+Получим адрес нового терминала 
+```
+myagkikh@KvaziK:~$ tty
+/dev/pts/1
+```
+
+Попробуем перенаправить команду вывода в наш новый терминал, для этого запустим ls с ошибочным параметром.
+myagkikh@KvaziK:/mnt/c/kvazik/study$ ls --b 2>/dev/pts/1
+На втором терминале видим вывод
+```
+myagkikh@KvaziK:~$ ls: option '--block-size' requires an argument
+Try 'ls --help' for more information.          
+```
+5. Для вывода в файл stoud нужно дописать в команду >> путь к файлу. Для примера подачи на вход команды stdin и вывода её в файла запустим команду
+wc -l README.md >> stout.log     
+На выходе получим файл stout.log в котором содержится 
+51 README.md
+
+6. Не совсем понятно что имеется ввиду под графическим режимом. Если это запущенные X типа KDE, то вывести всю графическую оболочку и плюшки в TTY не получится.
+ Терминал используется только для текстовых команд.
+ Если речь идет про запущенный в KDE терминал PTY то вывести из него данные в любой другой файл\терминал не представляет проблем.
+ 
+ 7. bash 5>$1 данная создает файловый дескриптор под номером 5 и определяет его вывод в stdout. 
+ Выполняя команду echo netology > /proc/$$/fd/5 мы получаем типовой stdout из 5 дескриптора в текущую консоль
+ ```
+ myagkikh@KvaziK:/mnt/c/kvazik/study/homework7$ echo netology > /proc/$$/fd/5
+ netology    
+ ```
+ 
+ 8. 
+ 
+ 
