@@ -82,13 +82,13 @@ README.md  error.log  out.log
 
 9. Команда cat /proc/$$/environ выведет все переменные текущего окружения (запущенного терминала). Добиться такого же вывода можно командой env.
 
-10. В файле "/proc/<PID>/cmdline" хранится командная строка, которая запустила данный процесс с указанным PID.
+10. В файле "/proc/PID/cmdline" хранится командная строка, которая запустила данный процесс с указанным PID.
 /proc/[pid]/cmdline
 This holds the complete command line for the process, unless the process is a zombie.
 In the latter case, there is nothing in this file: that is, a read on this file will return 0 characters.
 The command-line arguments appear in this file as a set of strings separated by null bytes ('\0'), with a further null byte after the last string.
 
-В файле "/proc/<PID>/exe" хранится симлинк на бинарник запущеной программы. 
+В файле "/proc/PID/exe" хранится симлинк на бинарник запущеной программы. 
 /proc/[pid]/exe
 Under Linux 2.2 and later, this file is a symbolic link containing the actual pathname of the executed command.
 This symbolic link can be dereferenced normally; attempting to open it will open the executable.
