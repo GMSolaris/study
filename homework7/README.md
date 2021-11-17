@@ -58,13 +58,59 @@ wc -l README.md >> stout.log
  Терминал используется только для текстовых команд.
  Если речь идет про запущенный в KDE терминал PTY то вывести из него данные в любой другой файл\терминал не представляет проблем.
  
- 7. bash 5>$1 данная создает файловый дескриптор под номером 5 и определяет его вывод в stdout. 
+ 7. bash 5>&1 данная создает файловый дескриптор под номером 5 и определяет его вывод в stdout. 
  Выполняя команду echo netology > /proc/$$/fd/5 мы получаем типовой stdout из 5 дескриптора в текущую консоль
  ```
  myagkikh@KvaziK:/mnt/c/kvazik/study/homework7$ echo netology > /proc/$$/fd/5
  netology    
  ```
  
- 8. 
- 
- 
+ 8. Для выполнение данной задачи придется использовать подмену дефолтных дескрипторов.
+ Возьмем команду которая выводит и stdout и stderr. Для этого скомбинируем пару команд. Первая строка это stdout, две другие строки это stderr.
+ ```
+ kvazik@myagkikh:/mnt/c/gmsolaris/study/homework7$ (dir && ls ---ppp)
+ README.md  error.log  out.log
+ ls: unrecognized option '---ppp'
+ Try 'ls --help' for more information.             
+``` 
+Теперь перенаправим вывод через подмену дескриптора. На выходе получим вывод в консоль stdout и передаем в pipe stderr где дальше через wc -l посчитаем кол-во переданных строк, их соответственно две. 
+```
+kvazik@myagkikh:/mnt/c/gmsolaris/study/homework7$ (dir && ls ---ppp) 3>&1 1>&2 2>&3 | wc -l
+README.md  error.log  out.log
+2   
+```
+
+9. Команда cat /proc/$$/environ выведет все переменные текущего окружения (запущенного терминала). Добиться такого же вывода можно командой env.
+
+10. В файле /proc/<PID>/cmdline хранится командная строка, которая запустила данный процесс с указанным PID.
+/proc/[pid]/cmdline
+This holds the complete command line for the process, unless the process is a zombie.
+In the latter case, there is nothing in this file: that is, a read on this file will return 0 characters.
+The command-line arguments appear in this file as a set of strings separated by null bytes ('\0'), with a further null byte after the last string.
+
+В файле /proc/<PID>/exe хранится симлинк на бинарник запущеной программы. 
+/proc/[pid]/exe
+Under Linux 2.2 and later, this file is a symbolic link containing the actual pathname of the executed command.
+This symbolic link can be dereferenced normally; attempting to open it will open the executable.
+
+11. Смотрим  cat /proc/cpuinfo | grep sse  
+Процессор поддерживает sse sse2
+
+12. Запуск команды ssh localhost 'tty' вызывает запуск команды tty по ssh на локальном сервере (разницы не в принципе и в запуске на удаленном сервере, просто будет другой адрес вместо localhost).
+При таком варианте запуска команды она выполняется не внутри терминала, соответственно я и получаю ошибку что это не терминал - not a tty
+Для изменение такого поведения достаточно запустить команду ssh с ключом -t Команда выполнится с запуском удаленного терминала.
+```
+ssh -t localhost tty
+kvazik@localhost's password:
+/dev/pts/3                 
+```
+
+13. Попробовал перехватить запущенный в другой сессии редактор файла. Нашел процесс запущеный в другой сессии и его PID. 
+Запустил новую консоль, ввел reptyr PID. Вышел из первой консоли, на второй получил запущенный редактор файла. 
+В принципе работает.
+
+14. При запуске команды sudo echo string > /root/new_file получим ошибку, так как sudo не перенаправляет stdout, соответственно команда echo выполнится без прав суперюзера. 
+Для выполнения подобной операции надо воспользоваться командой tee, она записывает результат выполнения команды в файл и\или выводит в stdout. Через pipe запустим такую команду
+echo string | sudo tee /root/new_file 
+В данном случае мы сначала выполним команду echo string, далее stdout от неё передадим через pipe на запуск команде tee, которая запустится с правами суперюзера и уже она выполнит запись строки в файл.
+
