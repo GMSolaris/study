@@ -5,6 +5,11 @@ kvazik@kvazik-matebook:/mnt/c/GMSolaris/study/homework8$ grep cd 'strace_bash'
 execve("/bin/bash", ["/bin/bash", "-c", "cd /tmp"], 0x7ffd3a7514f0 /* 17 vars */) = 0
 ```
 
+fix
+Команда отвечающая за смену директории нашлась ближе к концу
+chdir("/tmp") 
+
+
 2. Запустим strace на команду file и выведем в файл 2> Далее грепнем файл и посмотрим какие файлы открывались при работе.
  Отбрасываем все что .so это библиотеки, а не базы.
  В /etc лежат дефолтные пустые файлики, видимо это доп настройки для magic, судя по описанию.
@@ -95,6 +100,15 @@ with newly initialized stack, heap, and (initialized and uninitialized) data seg
 ```$ cat /proc/version
 Linux version 5.10.60.1-microsoft-standard-WSL2 (oe-user@oe-host) (x86_64-msft-linux-gcc (GCC) 9.3.0, GNU ld (GNU Binutils) 2.34.0.20200220) #1 SMP Wed Aug 25 23:20:18 UTC 2021   
 ```
+
+
+fix
+Системный вызов uname.
+uname({sysname="Linux", nodename="myagkikh", ...}) = 0  
+Part of the utsname information is also accessible  via  /proc/sys/ker‐
+       nel/{ostype, hostname, osrelease, version, domainname}.
+
+
 
 7. Разница между ; и && в том, что в случае с ; вторая команда выполнится в любом случае,
 а при использовании && вторая команда выполнится только в случае успешного выполнение первой (то есть если первая вернет exit code 0)
