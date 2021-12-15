@@ -5,10 +5,12 @@
 
 3. Поставил apache2 прописал vhost. Сертификат только не самоподписанный, а живой, и к нему цепочка сертификации. Слушать такой vhost должен порт 443.
 Нужные параметры 
+
+```
 SSLCertificateFile /var/www/httpd-cert/mxgroupru/mxgroup_ru_20200918.bundle.crt
 SSLCertificateKeyFile /var/www/httpd-cert/mxgroupru/mxgroup_ru_20200918.key
 
-```
+
 <VirtualHost *:443 >
         SSLCertificateFile /var/www/httpd-cert/mxgroupru/mxgroup_ru_20200918.bundle.crt
         SSLCertificateKeyFile /var/www/httpd-cert/mxgroupru/mxgroup_ru_20200918.key
@@ -65,23 +67,6 @@ Email Address []:
 {17:35}/mnt/c/projects/testssl.sh:3.1dev ✓ ➭ bash testssl.sh mxgroup.ru
 
 
-###########################################################
-    testssl.sh       3.1dev from https://testssl.sh/dev/
-    (2201a28 2021-12-13 18:24:34 -- )
-
-      This program is free software. Distribution and
-             modification under GPLv2 permitted.
-      USAGE w/o ANY WARRANTY. USE IT AT YOUR OWN RISK!
-
-       Please file bugs @ https://testssl.sh/bugs/
-
-###########################################################
-
- Using "OpenSSL 1.1.1k  25 Mar 2021" [~98 ciphers]
- on myagkikh:/usr/bin/openssl
- (built: "Aug 24 08:28:12 2021", platform: "debian-amd64")
-
-
  Start 2021-12-14 17:35:56        -->> 192.168.0.246:443 (mxgroup.ru) <<--
 
  rDNS (192.168.0.246):   www.mxgroup.ru.
@@ -95,9 +80,7 @@ Email Address []:
  TLS 1      offered (deprecated)
  TLS 1.1    offered (deprecated)
  TLS 1.2    offered (OK)
-```
 
-```
  Rating (experimental)
 
  Rating specs (not complete)  SSL Labs's 'SSL Server Rating Guide' (version 2009q from 2020-01-30)
@@ -114,10 +97,10 @@ Email Address []:
 
 5. Установите на Ubuntu ssh сервер, сгенерируйте новый приватный ключ. Скопируйте свой публичный ключ на другой сервер. Подключитесь к серверу по SSH-ключу.
 
+```
 sudo apt install ssh
 ssh-keygen -t ed25519 
 
-```
 {10:45}~/.ssh ➭ ssh-copy-id -i id_ed25519.pub myagkikh@192.168.0.244
 /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "id_ed25519.pub"
 The authenticity of host '192.168.0.244 (192.168.0.244)' can't be established.
