@@ -64,3 +64,22 @@ bash check_state_v3.sh list
 ```
 2021-12-16 12:47:23 192.168.250.250 check state failed
 ```
+
+4. Хук для добавления проверки при коммите
+```
+#!/usr/bin/env bash
+
+length=30
+len=$(cat $1|wc -m)
+
+if [[ $len -gt $length ]]
+  then
+  echo "Commit comment is too long"
+	exit 1
+elif ! grep -qE '^(04-script-[0-9][0-9]-[a-z])' $1;
+  then
+  echo "Commit should be like [04-xxx-01-xx]"
+	exit 1
+fi
+```
+
