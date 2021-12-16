@@ -1,0 +1,13 @@
+#!/bin/bash
+length=30
+len=$(cat $1|wc -m)
+
+if [[ $len -gt $length ]]
+  then
+  echo "Commit comment is too long"
+	exit 1
+elif ! grep -qE '^(04-script-[0-9][0-9]-[a-z])' $1;
+  then
+  echo "Commit should be like [04-xxx-01-xx]"
+	exit 1
+fi
