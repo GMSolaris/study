@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 length=30
 len=$(cat $1|wc -m)
 
