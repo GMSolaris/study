@@ -1,15 +1,17 @@
 1. Есть скрипт:
 
+```
 #!/usr/bin/env python3
 a = 1
 b = '2'
 c = a + b
+```
 
-c будет не поределено так как нельзя сложить две переменных с разными типами
-Чтобы получить 12 нужно :
-c=str(a)+b
-Чтобы получить 3 нужно:
-c=a+int(b)
+- c будет не поределено так как нельзя сложить две переменных с разными типами
+- Чтобы получить 12 нужно :
+  c=str(a)+b
+- Чтобы получить 3 нужно:
+  c=a+int(b)
 
 
 2. Исправленный скрипт.
@@ -60,7 +62,7 @@ for result in result_os.split('\n'):
 ```
 
 Вывод
-``
+```
 {17:22}/mnt/c/GMSolaris/study/homework16 (4.2):master ✗ ➭ python3 git_mod.py /home/kvazik/
 Not a git repository  ----> /home/kvazik/
 {17:23}/mnt/c/GMSolaris/study/homework16 (4.2):master ✗ ➭ python3 git_mod.py /home/kvazik/netology/
@@ -99,7 +101,7 @@ while 1==1 :
   time.sleep(timeout)
 ```
 
-
+Вывод
  ```
  root@websiteplatform:~# python3 check_ip.py
 Script started
