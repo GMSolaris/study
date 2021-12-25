@@ -1,5 +1,4 @@
 1. Исправляем json
-json
  {
  	"info": "Sample JSON output from our service\t",
  	"elements": [{
