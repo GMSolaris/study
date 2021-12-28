@@ -29,7 +29,7 @@ Dec 28 16:59:53 netology kernel: [20361.425223] [UFW BLOCK] IN=eth0 OUT= MAC=00:
 
 
 2. Для выпуска сертификата с помощью vault использовал след. скрипт:
-```
+```bash
 #!/bin/bash
 
 
@@ -191,7 +191,7 @@ server {
 ![alt text](nginx_cert.png "nginx ssl")
 
 4. Далее запускаем второй скрипт, который генерит новый сертификат и подкладывает в nginx и рестартует его.
-```
+```bash
 #! /bin/bash
 
 export VAULT_TOKEN=root
