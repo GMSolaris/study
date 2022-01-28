@@ -84,7 +84,7 @@ Vagrant.configure(2) do |config|
 end
 ```
 Конфиг для ansible playbook
-```
+```yml
 ---  
 — hosts: nodes    
   connection: local    
