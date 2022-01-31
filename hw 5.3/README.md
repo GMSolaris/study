@@ -53,12 +53,73 @@ https://hub.docker.com/r/gmsolaris/nginx
 Детально опишите и обоснуйте свой выбор.
 Сценарий:
 
-Высоконагруженное монолитное java веб-приложение; Не подходит. Для высоконагруженных монолитов лучше подойдет виртуальная машина.
+Высоконагруженное монолитное java веб-приложение;
+- Не подходит. Для высоконагруженных монолитов лучше подойдет виртуальная машина или даже физический сервер.
+
 Nodejs веб-приложение;
+- Прекрасно подойдет докер. Легковесные приложения, которым требуется в разное время разное кол-во ресурсов и практически не нужна объемная дисковая.
+
 Мобильное приложение c версиями для Android и iOS;
+- Так же прекрасно подойдет докер. Легковесные приложения, которым требуется в разное время разное кол-во ресурсов и практически не нужна объемная дисковая.
 Шина данных на базе Apache Kafka;
+- Не совсем знаком с шиной на базе Kafka, но в целом шина данных это набор микросервисов с небольшим но быстро изменающимся дисковым, где постоянно идет какой-то обмен. Докер вполне подойдет.
+
 Elasticsearch кластер для реализации логирования продуктивного веб-приложения - три ноды elasticsearch, два logstash и две ноды kibana;
+-  Тут вполне подойдет и докер и виртуальные машины. В целом докер лучше, так как эту инфраструктуру придется масштабировать и докер очень под это подохдит.
+
 Мониторинг-стек на базе Prometheus и Grafana;
+- Это однозначно докер. На любой уже работающий в проде сервер просто подкидываем контейнеры и начинаем мониторить сразу нужные метрики.
+
 MongoDB, как основное хранилище данных для java-приложения;
+- Для баз данных конечно докер используют и часто. Особенно когда надо собирать кластера. Я не всегда придерживаюсь такой практики. Чаще поднимаю базы данных как отдельные виртуалки или даже физические сервера. Для баз данных куда важнее иметь отказоустойчивость, то есть реплики, бекапы, зеркала.
+
 Gitlab сервер для реализации CI/CD процессов и приватный (закрытый) Docker Registry.
+- Вот это точно проще развернуть на виртуалке. Явно операция поднятия гитлаб сервера это не самое регулярное действие. К тому же хранить докер регистри внутри докера - плохая затея. При любых проблемах с докером вы теряете сразу и весь регистри, откуда можно было бы утянуть нужные контейнеры.
+
+3. 
+
+    Запустите первый контейнер из образа centos c любым тэгом в фоновом режиме, подключив папку /data из текущей рабочей директории на хостовой машине в /data контейнера;
+    Запустите второй контейнер из образа debian в фоновом режиме, подключив папку /data из текущей рабочей директории на хостовой машине в /data контейнера;
+    Подключитесь к первому контейнеру с помощью docker exec и создайте текстовый файл любого содержания в /data;
+    Добавьте еще один файл в папку /data на хостовой машине;
+    Подключитесь во второй контейнер и отобразите листинг и содержание файлов в /data контейнера.
+
+
+```
+myagkikh@netology:/$ sudo docker run --name centos -v /data:/data -itd centos:latest
+9c810aceb5a02b3f6d28bd607dde392d165481803ca08a9e7d8e9e0578f1667e
+myagkikh@netology:/$ sudo docker run --name debian -v /data:/data -itd debian:latest
+831b411c6ca8da54dee1a05c39611bfde03a37f4a674eac672af9ddfbcce819d
+myagkikh@netology:/$ sudo docker ps
+CONTAINER ID   IMAGE                COMMAND                  CREATED          STATUS          PORTS                               NAMES
+831b411c6ca8   debian:latest        "bash"                   5 seconds ago    Up 4 seconds                                        debian
+9c810aceb5a0   centos:latest        "/bin/bash"              17 seconds ago   Up 16 seconds                                       centos
+05dd85479d50   gmsolaris/nginx:v1   "/docker-entrypoint.…"   3 hours ago      Up 3 hours      0.0.0.0:80->80/tcp, :::80->80/tcp   nginx_netology
+myagkikh@netology:/$ cd data
+myagkikh@netology:/data$ ls -lh
+итого 0
+myagkikh@netology:/data$ sudo docker exec centos touch /data/netology_5.3_centos
+myagkikh@netology:/data$ sudo docker exec debian touch /data/netology_5.3_debian
+myagkikh@netology:/data$ sudo touch host_machine
+myagkikh@netology:/data$ ls -lh
+итого 0
+-rw-r--r-- 1 root root 0 янв 31 20:28 host_machine
+-rw-r--r-- 1 root root 0 янв 31 20:27 netology_5.3_centos
+-rw-r--r-- 1 root root 0 янв 31 20:28 netology_5.3_debian
+myagkikh@netology:/data$ sudo docker exec debian ls -lh data
+total 0
+-rw-r--r-- 1 root root 0 Jan 31 10:28 host_machine
+-rw-r--r-- 1 root root 0 Jan 31 10:27 netology_5.3_centos
+-rw-r--r-- 1 root root 0 Jan 31 10:28 netology_5.3_debian
+myagkikh@netology:/data$ sudo docker exec centos ls -lh data
+total 0
+-rw-r--r-- 1 root root 0 Jan 31 10:28 host_machine
+-rw-r--r-- 1 root root 0 Jan 31 10:27 netology_5.3_centos
+-rw-r--r-- 1 root root 0 Jan 31 10:28 netology_5.3_debian
+```
+
+4. Воспроизвести практическую часть лекции самостоятельно.
+
+Соберите Docker образ с Ansible, загрузите на Docker Hub и пришлите ссылку вместе с остальными ответами к задачам.
+https://hub.docker.com/repository/docker/gmsolaris/ansible
 
