@@ -1,7 +1,7 @@
 1. Используя docker поднимите инстанс PostgreSQL (версию 12) c 2 volume, в который будут складываться данные БД и бэкапы.
 Приведите получившуюся команду или docker-compose манифест.
 
-```
+```yaml
 version: "3.1"
 volumes:
  data:
@@ -83,7 +83,7 @@ CREATE ROLE
 ```
 
 - предоставьте пользователю test-simple-user права на SELECT/INSERT/UPDATE/DELETE данных таблиц БД test_db
-```
+```sql
 GRANT UPDATE, INSERT, DELETE, SELECT ON TABLE public.clients TO test_simple_user;
 GRANT UPDATE, INSERT, DELETE, SELECT ON TABLE public.orders TO test_simple_user;
 ```
