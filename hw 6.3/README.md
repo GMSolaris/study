@@ -1,6 +1,6 @@
 1. 
 - Используя docker поднимите инстанс MySQL (версию 8). Данные БД сохраните в volume.
-```yaml
+```yml
 version: '3.1'
 
 services:
