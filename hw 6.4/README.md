@@ -156,6 +156,16 @@ INSERT 0 8
 
 root@5980fccc7001:/# pg_dump -U postgres -d test_database > /var/lib/postgresql/backup/dump2.sql
 
-CREATE INDEX ON orders ((lower(title)));
+Добратал дамп. Во-первых неплохо бы добавить индекс на поле id, так как зачастую именно это поле будет использоваться для всех видов селектов и джоинов. Плюс его стоит сделать первичным ключом. 
+А поле title уникальным. 
+```sql
+CREATE TABLE public.orders (
+    id integer PRIMARY KEY,
+    title character varying(80),
+    price integer,
+	UNIQUE (id,title)
+)
+PARTITION BY RANGE (price);
+```
 
 
