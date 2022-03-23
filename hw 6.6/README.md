@@ -51,7 +51,7 @@ _score_adj:0
 Feb 21 17:50:59 gefest systemd[1]: postgresql@14-main.service: A process of this unit has been killed by the OOM killer.
 ```
 Картинка выглядела так
-![alt text](postgres-zbx.png "oomkiller")
+![alt text](postgres-zbx.jpg "oomkiller")
 
 Соответственно база после этого, если настроен корректно демон, перезапускается и какое-то время недоступна.
 Первым делом смотрим на размер буферов, если в конфиге некорректно выставлены значения, то база будет сжирать всю память, придет киллер и естественно убьет самого жирного, а это 99,9% сам постгрес.
