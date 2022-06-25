@@ -3,7 +3,6 @@
     Создадим бэкэнд в S3 (необязательно, но крайне желательно).
 
     Инициализируем проект и создаем воркспейсы.
-    
 	```
             11:55:52 myagkikh@netology:~/netology/terraform$ terraform workspace new stage
             Created and switched to workspace "stage"!
@@ -35,14 +34,16 @@
               stage
  ```           
 
-    Прод:
 
+
+    Прод:
 ``` 
  11:57:54 myagkikh@netology:~/netology/terraform$ terraform workspace select prod
     Switched to workspace "prod".
 ```
-    Вывод terraform workspace select prod:
-
+    
+	
+Вывод terraform workspace select prod:
 ```
     11:57:54 myagkikh@netology:~/netology/terraform$ terraform workspace select prod
             Switched to workspace "prod".
@@ -191,8 +192,8 @@
         12:20:19 myagkikh@netology:~/netology/terraform$ 
 		
 ```		
-		Содержимое s3.tf:
 
+Содержимое s3.tf:
 ```
 provider "aws" {
         region = "us-west-2"
@@ -216,8 +217,8 @@ resource "aws_s3_bucket" "bucket" {
 }
 ```
 
-Содержимое s3.tf:
 
+Содержимое s3.tf:
 ```
 provider "aws" {
         region = "us-west-2"
