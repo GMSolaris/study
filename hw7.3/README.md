@@ -3,7 +3,7 @@
     Создадим бэкэнд в S3 (необязательно, но крайне желательно).
 
     Инициализируем проект и создаем воркспейсы.
-	```
+```
             11:55:52 myagkikh@netology:~/netology/terraform$ terraform workspace new stage
             Created and switched to workspace "stage"!
             
@@ -32,7 +32,7 @@
             * dev
               prod
               stage
- ```           
+```           
 
 
 
@@ -43,7 +43,7 @@
 ```
     
 	
-Вывод terraform workspace select prod:
+	Вывод terraform workspace select prod:
 ```
     11:57:54 myagkikh@netology:~/netology/terraform$ terraform workspace select prod
             Switched to workspace "prod".
