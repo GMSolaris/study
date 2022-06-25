@@ -30,10 +30,12 @@ package main
             fmt.Println("Value in Meters:", rOutput, sOutput )    
         }
 ```
+
+```
 myagkikh@netology:~/hw7.5$ go run fut.go
 Enter value in foot: 123
 Value in Meters: 37 ( 37.49)
-
+```
 
 
 Напишите программу, которая найдет наименьший элемент в любом заданном списке, например x := []int{48,96,86,68,57,82,63,70,37,34,83,27,19,97,9,17,}:
@@ -58,11 +60,13 @@ Value in Meters: 37 ( 37.49)
             fmt.Println("Минимальное число : ", current)
         }    
 ```
+
+```
 myagkikh@netology:~/hw7.5$
 go run find.go
 Список значений :  [48 2 96 86 3 68 57 82 63 70 37 34 83 27 19 97 9 17 1]
 Минимальное число :  1
-
+```
 
 Напишите программу, которая выводит числа от 1 до 100, которые делятся на 3. То есть (3, 6, 9, …).
 ```go
@@ -88,6 +92,7 @@ package main
         }
 ```
 
+```
 myagkikh@netology:~/hw7.5$ go run dev3.go
 0 -> 3, 6, 9,
 10 -> 12, 15, 18,
@@ -99,3 +104,4 @@ myagkikh@netology:~/hw7.5$ go run dev3.go
 70 -> 72, 75, 78,
 80 -> 81, 84, 87, 90,
 90 -> 93, 96, 99,
+```
