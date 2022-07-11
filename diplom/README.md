@@ -1407,7 +1407,7 @@ monitoring.weltonauto.com  : ok=24   changed=2    unreachable=0    failed=0    s
 ```
 </details>
 
-Далее устанавливаем на все сервера NodeExporter. Для этого запускаем плейбук anisble/ne.yml
+Далее устанавливаем на все сервера NodeExporter. Для этого запускаем плейбук ansible/ne.yml
 
 <details><summary>Вывод ansible-playbook</summary>
 
@@ -1858,7 +1858,7 @@ weltonauto.com             : ok=15   changed=7    unreachable=0    failed=0    s
 
 ![alt text](img/7/datasource.png "data")
 
-Имопортируем из папки grafana для шаблона.
+Имопортируем из папки grafana два шаблона.
 
 ![alt text](img/7/ne_dashboard.png "ne")
 
