@@ -1,0 +1,9 @@
+#cloud-config
+users:
+  - name: myagkikh
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1eDAR6ZdMRiV1QEg71CGqam5fgUzQ7sj0ta1IbITvBiSQHdIw4M+CCOU5G2v51r0K7zBuGC68vyEjI5S1v1nsJt1yn7q8uEjptTNVER5HsBsLGOi0WggYI235eJv12us0RZulfEVPCQ4OBffDIYfRr+C1JPaJXJf+C2LqJlaTVUBi+syofNcdv7JpoaZcpoQlMe9A2cP8EJUejZFTYv+ZtoJeZoH3ed474eVfbWk3Jbb+IMTutPOdlQQKGPGbzJrIeaiLDzm7A8zVY5hp9PtDE6hAzudFPtsAMvdHj8fVmg09HQTD/tWuPCzrSaKxfNYyL586/SOpCUC8pxKmFGZ8w3CK8VIqWZN90hJZa7O5L+51FPYJbwqLOORn6M1l4tXeYNxrhf4WePkD4Wp+uRoMUSmgu7imCE2Hi0sUa8tnHCxC67wS1Og8UC2j3NNI6hZj0sb/Pon1UbYAkLY525kBN23BK1cVh5NvGAESm1CLqhqC4cWUPRhUsT0d2N8lF7M= myagkikh@netology
+

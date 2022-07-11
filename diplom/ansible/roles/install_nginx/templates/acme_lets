@@ -1,0 +1,71 @@
+server_tokens off;
+
+
+############## config for Let's Encrypt certificates
+### main server
+server {
+    listen 80;
+    server_name www.weltonauto.com weltonauto.com;
+    location /.well-known/acme-challenge {
+         root /var/www/letsencrypt;
+         try_files $uri $uri/ =404;
+                                         }
+    location / {
+        rewrite ^ https://www.weltonauto.com$request_uri? permanent;
+    }
+}
+
+### gitlab server
+server {
+    listen 80;
+    server_name git.weltonauto.com;
+    location /.well-known/acme-challenge {
+        root /var/www/letsencrypt;
+        try_files $uri $uri/ =404;
+    }
+
+    location / {
+        rewrite ^ https://git.weltonauto.com$request_uri? permanent;
+    }
+}
+
+### grafana
+server {
+    listen 80;
+    server_name grafana.weltonauto.com;
+    location /.well-known/acme-challenge {
+        root /var/www/letsencrypt;
+        try_files $uri $uri/ =404;
+    }
+    location / {
+        rewrite ^ https://grafana.weltonauto.com$request_uri? permanent;
+    }
+}
+
+
+### prometheus
+server {
+    listen 80;
+    server_name prometheus.weltonauto.com;
+    location /.well-known/acme-challenge {
+        root /var/www/letsencrypt;
+        try_files $uri $uri/ =404;
+    }
+    location / {
+        rewrite ^ https://prometheus.weltonauto.com$request_uri? permanent;
+    }
+}
+
+
+### alertmanager
+server {
+    listen 80;
+    server_name alertmanager.weltonauto.com;
+    location /.well-known/acme-challenge {
+        root /var/www/letsencrypt;
+        try_files $uri $uri/ =404;
+    }
+    location / {
+        rewrite ^ https://alertmanager.weltonauto.com$request_uri? permanent;
+    }
+}

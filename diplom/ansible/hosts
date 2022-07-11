@@ -1,0 +1,33 @@
+############################# main server
+[main]
+weltonauto.com  letsencrypt_email=kvazik.vl@gmail.com domain_name=weltonauto.com
+
+
+############################ mysql cluster
+[mysql]
+sql01.weltonauto.com ansible_port=2201 mysql_server_id=1 mysql_replication_role=master
+sql02.weltonauto.com ansible_port=2202 mysql_server_id=2 mysql_replication_role=slave
+
+
+
+###########################
+[app]
+app.weltonauto.com ansible_port=2203
+
+
+########################## gitlab + runner
+[gitlab]
+git.weltonauto.com ansible_port=2204
+
+[runner]
+runner.weltonauto.com ansible_port=2205
+
+
+######################### monitoring
+[monitoring]
+monitoring.weltonauto.com ansible_port=2206
+
+
+
+
+
