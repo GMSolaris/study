@@ -148,6 +148,8 @@ stream {
 ```
 После установки nginx запустится вторая роль, она устанавливает простенький proxy и разрешает использовать его изнутри локальной сети, для доступа машин в интернет. 
 
+<details><summary>Вывод ansible-playbook</summary>
+
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/main.yml -i ../ansible/hosts
 
@@ -223,6 +225,7 @@ PLAY RECAP ********************************************************************
 weltonauto.com             : ok=22   changed=20   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 
 ```
+</details>
 
 После этого пробуем зайти на любой сервер и получить 502, так как он еще не настроен. 
 
@@ -531,3 +534,1240 @@ app.weltonauto.com         : ok=14   changed=2    unreachable=0    failed=0    s
 ![alt text](img/5/wordpress2.png "wp2")
 
 ![alt text](img/5/wordpress.png "wp")
+
+6. Устанавливаем gitlab и gitlab-runner. Первым делом устанавливаем gitlab. Для этого выполняем плейбук ansible/gitlab.yml.
+
+```
+changed: [git.weltonauto.com]
+
+TASK [gitlab : Install GitLab dependencies (Debian).] *******************************
+changed: [git.weltonauto.com]
+
+TASK [gitlab : Download GitLab repository installation script.] *********************
+changed: [git.weltonauto.com]
+
+TASK [gitlab : Install GitLab repository.] ******************************************
+changed: [git.weltonauto.com]
+
+TASK [gitlab : Define the Gitlab package name.] *************************************
+skipping: [git.weltonauto.com]
+
+TASK [gitlab : Install GitLab] ******************************************************
+changed: [git.weltonauto.com]
+
+TASK [gitlab : Reconfigure GitLab (first run).] *************************************
+changed: [git.weltonauto.com]
+
+TASK [gitlab : Create GitLab SSL configuration folder.] *****************************
+skipping: [git.weltonauto.com]
+
+TASK [gitlab : Create self-signed certificate.] *************************************
+skipping: [git.weltonauto.com]
+
+TASK [gitlab : Copy GitLab configuration file.] *************************************
+changed: [git.weltonauto.com]
+
+RUNNING HANDLER [gitlab : restart gitlab] *******************************************
+changed: [git.weltonauto.com]
+
+PLAY RECAP **************************************************************************
+```
+
+Далее проводим первичную настройку проекта. Создаем проект, получаем токен для gitlabrunner'a. Далее нужно вписать его в конфиг.
+
+![alt text](img/6/gitlab.png "gitlab")
+
+![alt text](img/6/runner_config.png "wp")
+
+Запускаем установку gitlab-runner. Для этого надо запустить ansible/gitlab-runner.yml
+
+```
+myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/runner.yml -i ../ansible/hosts
+
+PLAY [runner] ***********************************************************************
+
+TASK [Gathering Facts] **************************************************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Load platform-specific variables] *****************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Container) Pull Image from Registry] *************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Container) Define Container volume Path] *********************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Container) List configured runners] **************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Container) Check runner is registered] ***********************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : configured_runners?] ******************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : verified_runners?] ********************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Container) Register GitLab Runner] ***************************
+skipping: [runner.weltonauto.com] => (item={'name': 'runner', 'state': 'present', 'executor': 'shell', 'output_limit': 4096, 'concurrent_specific': '0', 'docker_image': '', 'tags': [], 'run_untagged': True, 'protected': False, 'docker_privileged': False, 'locked': 'false', 'docker_network_mode': 'bridge', 'env_vars': []})
+
+TASK [gitlab-runner : Create .gitlab-runner dir] ************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Ensure config.toml exists] ************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Set concurrent option] ****************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add listen_address to config] *********************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add log_format to config] *************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add sentry dsn to config] *************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add session server listen_address to config] ******************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add session server advertise_address to config] ***************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add session server session_timeout to config] *****************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Get existing config.toml] *************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Get pre-existing runner configs] ******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Create temporary directory] ***********************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Write config section for each runner] *************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Assemble new config.toml] *************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Container) Start the container] ******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Debian) Get Gitlab repository installation script] ***********
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Debian) Install Gitlab repository] ***************************
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Debian) Update gitlab_runner_package_name] *******************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Debian) Set gitlab_runner_package_name] **********************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Debian) Install GitLab Runner] *******************************
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Debian) Install GitLab Runner] *******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Debian) Remove ~/gitlab-runner/.bash_logout on debian buster and ubuntu focal] **
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Ensure /etc/systemd/system/gitlab-runner.service.d/ exists] ***
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add reload command to GitLab Runner system service] ***********
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Configure graceful stop for GitLab Runner system service] *****
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Force systemd to reread configs] ******************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (RedHat) Get Gitlab repository installation script] ***********
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (RedHat) Install Gitlab repository] ***************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (RedHat) Update gitlab_runner_package_name] *******************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (RedHat) Set gitlab_runner_package_name] **********************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (RedHat) Install GitLab Runner] *******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Ensure /etc/systemd/system/gitlab-runner.service.d/ exists] ***
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add reload command to GitLab Runner system service] ***********
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Configure graceful stop for GitLab Runner system service] *****
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Force systemd to reread configs] ******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Check gitlab-runner executable exists] ****************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Set fact -> gitlab_runner_exists] *********************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Get existing version] *********************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Set fact -> gitlab_runner_existing_version] ***********
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Precreate gitlab-runner log directory] ****************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Download GitLab Runner] *******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Setting Permissions for gitlab-runner executable] *****
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Install GitLab Runner] ********************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Start GitLab Runner] **********************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Stop GitLab Runner] ***********************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Download GitLab Runner] *******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Setting Permissions for gitlab-runner executable] *****
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (MacOS) Start GitLab Runner] **********************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Arch) Set gitlab_runner_package_name] ************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Arch) Install GitLab Runner] *********************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Ensure /etc/systemd/system/gitlab-runner.service.d/ exists] ***
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add reload command to GitLab Runner system service] ***********
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Configure graceful stop for GitLab Runner system service] *****
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Force systemd to reread configs] ******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Unix) List configured runners] *******************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Unix) Check runner is registered] ****************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Unix) Register GitLab Runner] ********************************
+included: /home/myagkikh/devops_dip/ansible/roles/gitlab-runner/tasks/register-runner.yml for runner.weltonauto.com => (item={'name': 'runner', 'state': 'present', 'executor': 'shell', 'output_limit': 4096, 'concurrent_specific': '0', 'docker_image': '', 'tags': [], 'run_untagged': True, 'protected': False, 'docker_privileged': False, 'locked': 'false', 'docker_network_mode': 'bridge', 'env_vars': []})
+
+TASK [gitlab-runner : remove config.toml file] **************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Create .gitlab-runner dir] ************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Ensure config.toml exists] ************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Construct the runner command without secrets] *****************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Register runner to GitLab] ************************************
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Create .gitlab-runner dir] ************************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Ensure config.toml exists] ************************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Set concurrent option] ****************************************
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add listen_address to config] *********************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add log_format to config] *************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add sentry dsn to config] *************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add session server listen_address to config] ******************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add session server advertise_address to config] ***************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Add session server session_timeout to config] *****************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Get existing config.toml] *************************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Get pre-existing runner configs] ******************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Create temporary directory] ***********************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : Write config section for each runner] *************************
+included: /home/myagkikh/devops_dip/ansible/roles/gitlab-runner/tasks/config-runner.yml for runner.weltonauto.com => (item=concurrent = 4
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+)
+included: /home/myagkikh/devops_dip/ansible/roles/gitlab-runner/tasks/config-runner.yml for runner.weltonauto.com => (item=  name = "runner"
+  output_limit = 4096
+  url = "http://git.weltonauto.com"
+  token = "x49mw3JAi2C9xs1ww1pM"
+  executor = "shell"
+  [runners.custom_build_dir]
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+)
+
+TASK [gitlab-runner : conf[1/2]: Create temporary file] *****************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[1/2]: Isolate runner configuration] **********************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : include_tasks] ************************************************
+skipping: [runner.weltonauto.com] => (item={'name': 'runner', 'state': 'present', 'executor': 'shell', 'output_limit': 4096, 'concurrent_specific': '0', 'docker_image': '', 'tags': [], 'run_untagged': True, 'protected': False, 'docker_privileged': False, 'locked': 'false', 'docker_network_mode': 'bridge', 'env_vars': []})
+
+TASK [gitlab-runner : conf[1/2]: Remove runner config] ******************************
+skipping: [runner.weltonauto.com] => (item={'name': 'runner', 'state': 'present', 'executor': 'shell', 'output_limit': 4096, 'concurrent_specific': '0', 'docker_image': '', 'tags': [], 'run_untagged': True, 'protected': False, 'docker_privileged': False, 'locked': 'false', 'docker_network_mode': 'bridge', 'env_vars': []})
+
+TASK [gitlab-runner : conf[2/2]: Create temporary file] *****************************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: Isolate runner configuration] **********************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : include_tasks] ************************************************
+included: /home/myagkikh/devops_dip/ansible/roles/gitlab-runner/tasks/update-config-runner.yml for runner.weltonauto.com => (item={'name': 'runner', 'state': 'present', 'executor': 'shell', 'output_limit': 4096, 'concurrent_specific': '0', 'docker_image': '', 'tags': [], 'run_untagged': True, 'protected': False, 'docker_privileged': False, 'locked': 'false', 'docker_network_mode': 'bridge', 'env_vars': []})
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set concurrent limit option] **********
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set coordinator URL] ******************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set clone URL] ************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set environment option] ***************
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set pre_clone_script] *****************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set pre_build_script] *****************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set tls_ca_file] **********************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set post_build_script] ****************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set runner executor option] ***********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set runner shell option] **************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set runner executor section] **********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set output_limit option] **************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set runner docker image option] *******
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker helper image option] *******
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker privileged option] *********
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker wait_for_services_timeout option] *****
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker tlsverify option] **********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker shm_size option] ***********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker disable_cache option] ******
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker DNS option] ****************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker DNS search option] *********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker pull_policy option] ********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker volumes option] ************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker devices option] ************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set runner docker network option] *****
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set custom_build_dir section] *********
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set docker custom_build_dir-enabled option] *******
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache section] ********************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache s3 section] *****************
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache gcs section] ****************
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache azure section] **************
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache type option] ****************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache path option] ****************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache shared option] **************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache s3 server addresss] *********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache s3 access key] **************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache s3 secret key] **************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache s3 bucket name option] ******
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache s3 bucket location option] **
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache s3 insecure option] *********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache gcs bucket name] ************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache gcs credentials file] *******
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache gcs access id] **************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache gcs private key] ************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache azure account name] *********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache azure account key] **********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache azure container name] *******
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache azure storage domain] *******
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set ssh user option] ******************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set ssh host option] ******************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set ssh port option] ******************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set ssh password option] **************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set ssh identity file option] *********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set virtualbox base name option] ******
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set virtualbox base snapshot option] **
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set virtualbox base folder option] ****
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set virtualbox disable snapshots option] *******
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set builds dir file option] ***********
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Set cache dir file option] ************
+ok: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Ensure directory permissions] *********
+skipping: [runner.weltonauto.com] => (item=)
+skipping: [runner.weltonauto.com] => (item=)
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Ensure directory access test] *********
+skipping: [runner.weltonauto.com] => (item=)
+skipping: [runner.weltonauto.com] => (item=)
+
+TASK [gitlab-runner : conf[2/2]: runner[1/1]: Ensure directory access fail on error] 
+skipping: [runner.weltonauto.com] => (item={'changed': False, 'skipped': True, 'skip_reason': 'Conditional result was False', 'item': '', 'ansible_loop_var': 'item'})
+skipping: [runner.weltonauto.com] => (item={'changed': False, 'skipped': True, 'skip_reason': 'Conditional result was False', 'item': '', 'ansible_loop_var': 'item'})
+
+TASK [gitlab-runner : include_tasks] ************************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : conf[2/2]: Remove runner config] ******************************
+skipping: [runner.weltonauto.com] => (item={'name': 'runner', 'state': 'present', 'executor': 'shell', 'output_limit': 4096, 'concurrent_specific': '0', 'docker_image': '', 'tags': [], 'run_untagged': True, 'protected': False, 'docker_privileged': False, 'locked': 'false', 'docker_network_mode': 'bridge', 'env_vars': []})
+
+TASK [gitlab-runner : Assemble new config.toml] *************************************
+changed: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Check gitlab-runner executable exists] **************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Set fact -> gitlab_runner_exists] *******************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Get existing version] *******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Set fact -> gitlab_runner_existing_version] *********
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Ensure install directory exists] ********************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Download GitLab Runner] *****************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Install GitLab Runner] ******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Install GitLab Runner] ******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Make sure runner is stopped] ************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Download GitLab Runner] *****************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) List configured runners] ****************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Check runner is registered] *************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Register GitLab Runner] *****************************
+skipping: [runner.weltonauto.com] => (item={'name': 'runner', 'state': 'present', 'executor': 'shell', 'output_limit': 4096, 'concurrent_specific': '0', 'docker_image': '', 'tags': [], 'run_untagged': True, 'protected': False, 'docker_privileged': False, 'locked': 'false', 'docker_network_mode': 'bridge', 'env_vars': []})
+
+TASK [gitlab-runner : (Windows) Create .gitlab-runner dir] **************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Ensure config.toml exists] **************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Set concurrent option] ******************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Add listen_address to config] ***********************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Add sentry dsn to config] ***************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Add session server listen_address to config] ********
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Add session server advertise_address to config] *****
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Add session server session_timeout to config] *******
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Get existing config.toml] ***************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Get pre-existing global config] *********************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Get pre-existing runner configs] ********************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Create temporary directory] *************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Write config section for each runner] ***************
+skipping: [runner.weltonauto.com] => (item=concurrent = 4
+check_interval = 0
+
+[session_server]
+  session_timeout = 1800
+
+)
+skipping: [runner.weltonauto.com] => (item=  name = "runner"
+  output_limit = 4096
+  url = "http://git.weltonauto.com"
+  token = "x49mw3JAi2C9xs1ww1pM"
+  executor = "shell"
+  [runners.custom_build_dir]
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
+)
+
+TASK [gitlab-runner : (Windows) Create temporary file config.toml] ******************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Write global config to file] ************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Create temporary file runners-config.toml] **********
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Assemble runners files in config dir] ***************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Assemble new config.toml] ***************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Verify config] **************************************
+skipping: [runner.weltonauto.com]
+
+TASK [gitlab-runner : (Windows) Start GitLab Runner] ********************************
+skipping: [runner.weltonauto.com]
+
+RUNNING HANDLER [gitlab-runner : restart_gitlab_runner] *****************************
+changed: [runner.weltonauto.com]
+
+RUNNING HANDLER [gitlab-runner : restart_gitlab_runner_macos] ***********************
+skipping: [runner.weltonauto.com]
+
+PLAY RECAP **************************************************************************
+runner.weltonauto.com      : ok=82   changed=19   unreachable=0    failed=0    skipped=110  rescued=0    ignored=0
+
+```
+
+
+В результате мы полчаем настроенный проект на сервере gitlab и сервер где запущен gitlab-runner.
+
+
+
+7. Устанавливаем мониторинг всего проекта. Для этого нужно применить два плейбука. Первый ansible/monitoring.yml устанавливает prometheus, grafana, alertmanager.
+
+
+```
+myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/monitoring.yml -i ../ansible/hosts
+
+PLAY [monitoring] *********************************************************
+
+TASK [Gathering Facts] ****************************************************
+ok: [monitoring.weltonauto.com]
+
+TASK [monitoring : prepare install prometheus] ****************************
+included: /home/myagkikh/devops_dip/ansible/roles/monitoring/tasks/prepare.yml for monitoring.weltonauto.com
+
+TASK [monitoring : Allow Ports] *******************************************
+skipping: [monitoring.weltonauto.com] => (item=9090/tcp)
+skipping: [monitoring.weltonauto.com] => (item=9093/tcp)
+skipping: [monitoring.weltonauto.com] => (item=9094/tcp)
+skipping: [monitoring.weltonauto.com] => (item=9100/tcp)
+skipping: [monitoring.weltonauto.com] => (item=9094/udp)
+
+TASK [monitoring : Disable SELinux] ***************************************
+skipping: [monitoring.weltonauto.com]
+
+TASK [monitoring : Stop SELinux] ******************************************
+skipping: [monitoring.weltonauto.com]
+
+TASK [monitoring : Allow TCP Ports] ***************************************
+ok: [monitoring.weltonauto.com] => (item=9090)
+ok: [monitoring.weltonauto.com] => (item=9093)
+ok: [monitoring.weltonauto.com] => (item=9094)
+ok: [monitoring.weltonauto.com] => (item=9100)
+
+TASK [monitoring : Allow UDP Ports] ***************************************
+ok: [monitoring.weltonauto.com]
+
+TASK [monitoring : install prometheus] ************************************
+included: /home/myagkikh/devops_dip/ansible/roles/monitoring/tasks/install_prometheus.yml for monitoring.weltonauto.com
+
+TASK [monitoring : create user prometheus] ********************************
+ok: [monitoring.weltonauto.com]
+
+TASK [monitoring : create directories for prometheus] *********************
+ok: [monitoring.weltonauto.com] => (item=/tmp/prometheus)
+ok: [monitoring.weltonauto.com] => (item=/etc/prometheus)
+ok: [monitoring.weltonauto.com] => (item=/var/lib/prometheus)
+
+TASK [monitoring : install prometheus] ************************************
+skipping: [monitoring.weltonauto.com]
+
+TASK [monitoring : copy files to prometheus] ******************************
+ok: [monitoring.weltonauto.com] => (item=prometheus)
+ok: [monitoring.weltonauto.com] => (item=promtool)
+
+TASK [monitoring : copy config to prometheus] *****************************
+ok: [monitoring.weltonauto.com] => (item=console_libraries)
+ok: [monitoring.weltonauto.com] => (item=consoles)
+changed: [monitoring.weltonauto.com] => (item=prometheus.yml)
+
+TASK [monitoring : system.d init] *****************************************
+ok: [monitoring.weltonauto.com]
+
+TASK [monitoring : copy config] *******************************************
+changed: [monitoring.weltonauto.com]
+
+TASK [monitoring : copy alert] ********************************************
+ok: [monitoring.weltonauto.com]
+
+TASK [monitoring : prometheus restart] ************************************
+ok: [monitoring.weltonauto.com]
+
+TASK [monitoring : install alertmanager] **********************************
+included: /home/myagkikh/devops_dip/ansible/roles/monitoring/tasks/install_alertmanager.yml for monitoring.weltonauto.com
+
+TASK [monitoring : Create User Alertmanager] ******************************
+ok: [monitoring.weltonauto.com]
+
+TASK [monitoring : Create Directories For Alertmanager] *******************
+ok: [monitoring.weltonauto.com] => (item=/tmp/alertmanager)
+ok: [monitoring.weltonauto.com] => (item=/etc/alertmanager)
+ok: [monitoring.weltonauto.com] => (item=/var/lib/prometheus/alertmanager)
+
+TASK [monitoring : Download And Unzipped Alertmanager] ********************
+skipping: [monitoring.weltonauto.com]
+
+TASK [monitoring : Copy Bin Files From Unzipped to Alertmanager] **********
+ok: [monitoring.weltonauto.com] => (item=alertmanager)
+ok: [monitoring.weltonauto.com] => (item=amtool)
+
+TASK [monitoring : Copy Conf File From Unzipped to Alertmanager] **********
+ok: [monitoring.weltonauto.com]
+
+TASK [monitoring : Create File for Alertmanager Systemd] ******************
+ok: [monitoring.weltonauto.com]
+
+TASK [monitoring : Systemctl Alertmanager Start] **************************
+ok: [monitoring.weltonauto.com]
+
+TASK [grafana : Allow Ports] **********************************************
+skipping: [monitoring.weltonauto.com]
+
+TASK [grafana : Disable SELinux] ******************************************
+skipping: [monitoring.weltonauto.com]
+
+TASK [grafana : Stop SELinux] *********************************************
+skipping: [monitoring.weltonauto.com]
+
+TASK [grafana : Add Repository] *******************************************
+skipping: [monitoring.weltonauto.com]
+
+TASK [grafana : Install Grafana on RedHat Family] *************************
+skipping: [monitoring.weltonauto.com]
+
+TASK [grafana : Allow TCP Ports] ******************************************
+ok: [monitoring.weltonauto.com]
+
+TASK [grafana : Import Grafana Apt Key] ***********************************
+ok: [monitoring.weltonauto.com]
+
+TASK [grafana : Add APT Repository] ***************************************
+ok: [monitoring.weltonauto.com]
+
+TASK [grafana : Install Grafana on Debian Family] *************************
+ok: [monitoring.weltonauto.com]
+
+PLAY RECAP ****************************************************************
+monitoring.weltonauto.com  : ok=24   changed=2    unreachable=0    failed=0    skipped=10   rescued=0    ignored=0
+```
+
+Далее устанавливаем на все сервера NodeExporter. Для этого запускаем плейбук anisble/ne.yml
+
+```
+myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/ne.yml -i ../ansible/hosts
+
+PLAY [mysql main app gitlab runner monitoring] *************************
+
+TASK [Gathering Facts] *************************************************
+ok: [app.weltonauto.com]
+ok: [sql01.weltonauto.com]
+ok: [sql02.weltonauto.com]
+ok: [weltonauto.com]
+ok: [runner.weltonauto.com]
+ok: [git.weltonauto.com]
+ok: [monitoring.weltonauto.com]
+
+TASK [install_ne : Assert usage of systemd as an init system] **********
+ok: [sql01.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [sql02.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [app.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [git.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [runner.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [monitoring.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [install_ne : Get systemd version] ********************************
+ok: [sql01.weltonauto.com]
+ok: [app.weltonauto.com]
+ok: [weltonauto.com]
+ok: [sql02.weltonauto.com]
+ok: [git.weltonauto.com]
+ok: [runner.weltonauto.com]
+ok: [monitoring.weltonauto.com]
+
+TASK [install_ne : Set systemd version fact] ***************************
+ok: [sql01.weltonauto.com]
+ok: [sql02.weltonauto.com]
+ok: [weltonauto.com]
+ok: [app.weltonauto.com]
+ok: [git.weltonauto.com]
+ok: [runner.weltonauto.com]
+ok: [monitoring.weltonauto.com]
+
+TASK [install_ne : Naive assertion of proper listen address] ***********
+ok: [sql01.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [sql02.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [app.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [git.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [runner.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+ok: [monitoring.weltonauto.com] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [install_ne : Assert collectors are not both disabled and enabled at the same time] ******
+
+TASK [install_ne : Assert that TLS key and cert path are set] **********
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Check existence of TLS cert file] *******************
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Check existence of TLS key file] ********************
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Assert that TLS key and cert are present] ***********
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Check if node_exporter is installed] ****************
+ok: [sql01.weltonauto.com]
+ok: [app.weltonauto.com]
+ok: [sql02.weltonauto.com]
+ok: [git.weltonauto.com]
+ok: [weltonauto.com]
+ok: [runner.weltonauto.com]
+ok: [monitoring.weltonauto.com]
+
+TASK [install_ne : Gather currently installed node_exporter version (if any)] ********************
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Get latest release] *********************************
+skipping: [sql01.weltonauto.com]
+
+TASK [install_ne : Set node_exporter version to {{ _latest_release.json.tag_name[1:] }}] **********
+skipping: [sql01.weltonauto.com]
+
+TASK [install_ne : Get checksum list from github] **********************
+ok: [sql01.weltonauto.com]
+
+TASK [install_ne : Get checksum for amd64 architecture] ****************
+skipping: [sql01.weltonauto.com] => (item=3919266f1dbad5f7e5ce7b4207057fc253a8322f570607cc0f3e73f4a53338e3  node_exporter-1.1.2.darwin-amd64.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=5b0195e203dedd3a8973cd1894a55097554a4af6d8f4f0614c2c67d6670ea8ae  node_exporter-1.1.2.linux-386.tar.gz)
+ok: [sql01.weltonauto.com] => (item=8c1f6a317457a658e0ae68ad710f6b4098db2cad10204649b51e3c043aa3e70d  node_exporter-1.1.2.linux-amd64.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=3919266f1dbad5f7e5ce7b4207057fc253a8322f570607cc0f3e73f4a53338e3  node_exporter-1.1.2.darwin-amd64.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=eb5e7d16f18bb3272d0d832986fc8ac6cb0b6c42d487c94e15dabb10feae8e04  node_exporter-1.1.2.linux-arm64.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=5b0195e203dedd3a8973cd1894a55097554a4af6d8f4f0614c2c67d6670ea8ae  node_exporter-1.1.2.linux-386.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=41892e451e80160491a1cc7bbe6bccd6cb842ae8340e1bc6e32f72cefb1aee80  node_exporter-1.1.2.linux-armv5.tar.gz)
+ok: [sql02.weltonauto.com] => (item=8c1f6a317457a658e0ae68ad710f6b4098db2cad10204649b51e3c043aa3e70d  node_exporter-1.1.2.linux-amd64.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=1cc1bf4cacb84d6c228d9ce8045b5b00b73afd954046f7b2add428a04d14daee  node_exporter-1.1.2.linux-armv6.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=eb5e7d16f18bb3272d0d832986fc8ac6cb0b6c42d487c94e15dabb10feae8e04  node_exporter-1.1.2.linux-arm64.tar.gz)
+skipping: [weltonauto.com] => (item=3919266f1dbad5f7e5ce7b4207057fc253a8322f570607cc0f3e73f4a53338e3  node_exporter-1.1.2.darwin-amd64.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=a9fe816eb7b976b1587d6d654c437f7d78349f70686fa22ae33e94fe84281af2  node_exporter-1.1.2.linux-armv7.tar.gz)
+skipping: [weltonauto.com] => (item=5b0195e203dedd3a8973cd1894a55097554a4af6d8f4f0614c2c67d6670ea8ae  node_exporter-1.1.2.linux-386.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=a99ab2cdc62db25ff01d184e21ad433e3949cd791fc2c80b6bacc6b90d5a62c2  node_exporter-1.1.2.linux-mips.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=22d9c2a5363502c79e0645ba02eafd9561b33d1e0e819ce4df3fcf7dc96e3792  node_exporter-1.1.2.linux-mips64.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=41892e451e80160491a1cc7bbe6bccd6cb842ae8340e1bc6e32f72cefb1aee80  node_exporter-1.1.2.linux-armv5.tar.gz)
+skipping: [git.weltonauto.com] => (item=3919266f1dbad5f7e5ce7b4207057fc253a8322f570607cc0f3e73f4a53338e3  node_exporter-1.1.2.darwin-amd64.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=1cc1bf4cacb84d6c228d9ce8045b5b00b73afd954046f7b2add428a04d14daee  node_exporter-1.1.2.linux-armv6.tar.gz)
+skipping: [app.weltonauto.com] => (item=3919266f1dbad5f7e5ce7b4207057fc253a8322f570607cc0f3e73f4a53338e3  node_exporter-1.1.2.darwin-amd64.tar.gz)
+skipping: [git.weltonauto.com] => (item=5b0195e203dedd3a8973cd1894a55097554a4af6d8f4f0614c2c67d6670ea8ae  node_exporter-1.1.2.linux-386.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=a66b70690c3c4fff953905a041c74834f96be85a806e74a1cc925e607ef50a26  node_exporter-1.1.2.linux-mips64le.tar.gz)
+skipping: [app.weltonauto.com] => (item=5b0195e203dedd3a8973cd1894a55097554a4af6d8f4f0614c2c67d6670ea8ae  node_exporter-1.1.2.linux-386.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=a9fe816eb7b976b1587d6d654c437f7d78349f70686fa22ae33e94fe84281af2  node_exporter-1.1.2.linux-armv7.tar.gz)
+ok: [weltonauto.com] => (item=8c1f6a317457a658e0ae68ad710f6b4098db2cad10204649b51e3c043aa3e70d  node_exporter-1.1.2.linux-amd64.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=f7fba791cbc758b021d0e9a2400c82d1f29337e568ab00edc84b053ca467ea3c  node_exporter-1.1.2.linux-mipsle.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=a99ab2cdc62db25ff01d184e21ad433e3949cd791fc2c80b6bacc6b90d5a62c2  node_exporter-1.1.2.linux-mips.tar.gz)
+ok: [git.weltonauto.com] => (item=8c1f6a317457a658e0ae68ad710f6b4098db2cad10204649b51e3c043aa3e70d  node_exporter-1.1.2.linux-amd64.tar.gz)
+skipping: [weltonauto.com] => (item=eb5e7d16f18bb3272d0d832986fc8ac6cb0b6c42d487c94e15dabb10feae8e04  node_exporter-1.1.2.linux-arm64.tar.gz)
+skipping: [git.weltonauto.com] => (item=eb5e7d16f18bb3272d0d832986fc8ac6cb0b6c42d487c94e15dabb10feae8e04  node_exporter-1.1.2.linux-arm64.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=22d9c2a5363502c79e0645ba02eafd9561b33d1e0e819ce4df3fcf7dc96e3792  node_exporter-1.1.2.linux-mips64.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=294c0b05dff4f368512449de7268e3f06de679a9343e9885044adc702865080b  node_exporter-1.1.2.linux-ppc64.tar.gz)
+skipping: [git.weltonauto.com] => (item=41892e451e80160491a1cc7bbe6bccd6cb842ae8340e1bc6e32f72cefb1aee80  node_exporter-1.1.2.linux-armv5.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=a66b70690c3c4fff953905a041c74834f96be85a806e74a1cc925e607ef50a26  node_exporter-1.1.2.linux-mips64le.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=d1d201b16d757980db654bb9e448ab0c81ca4c2715243c3fa4305bef5967bd41  node_exporter-1.1.2.linux-ppc64le.tar.gz)
+ok: [app.weltonauto.com] => (item=8c1f6a317457a658e0ae68ad710f6b4098db2cad10204649b51e3c043aa3e70d  node_exporter-1.1.2.linux-amd64.tar.gz)
+skipping: [weltonauto.com] => (item=41892e451e80160491a1cc7bbe6bccd6cb842ae8340e1bc6e32f72cefb1aee80  node_exporter-1.1.2.linux-armv5.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=f7fba791cbc758b021d0e9a2400c82d1f29337e568ab00edc84b053ca467ea3c  node_exporter-1.1.2.linux-mipsle.tar.gz)
+skipping: [git.weltonauto.com] => (item=1cc1bf4cacb84d6c228d9ce8045b5b00b73afd954046f7b2add428a04d14daee  node_exporter-1.1.2.linux-armv6.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=6007420f425d08626c05de2dbe0e8bb785a16bba1b02c01cb06d37d7fab3bc97  node_exporter-1.1.2.linux-s390x.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=294c0b05dff4f368512449de7268e3f06de679a9343e9885044adc702865080b  node_exporter-1.1.2.linux-ppc64.tar.gz)
+skipping: [app.weltonauto.com] => (item=eb5e7d16f18bb3272d0d832986fc8ac6cb0b6c42d487c94e15dabb10feae8e04  node_exporter-1.1.2.linux-arm64.tar.gz)
+skipping: [git.weltonauto.com] => (item=a9fe816eb7b976b1587d6d654c437f7d78349f70686fa22ae33e94fe84281af2  node_exporter-1.1.2.linux-armv7.tar.gz)
+skipping: [weltonauto.com] => (item=1cc1bf4cacb84d6c228d9ce8045b5b00b73afd954046f7b2add428a04d14daee  node_exporter-1.1.2.linux-armv6.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=0596e9c1cc358e6fcc60cb83f0d1ba9a37ccee11eca035429c9791c0beb04389  node_exporter-1.1.2.netbsd-386.tar.gz)
+skipping: [git.weltonauto.com] => (item=a99ab2cdc62db25ff01d184e21ad433e3949cd791fc2c80b6bacc6b90d5a62c2  node_exporter-1.1.2.linux-mips.tar.gz)
+skipping: [weltonauto.com] => (item=a9fe816eb7b976b1587d6d654c437f7d78349f70686fa22ae33e94fe84281af2  node_exporter-1.1.2.linux-armv7.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=d1d201b16d757980db654bb9e448ab0c81ca4c2715243c3fa4305bef5967bd41  node_exporter-1.1.2.linux-ppc64le.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=46c964efd336f0e35f62c739ce9edf5409911e7652604e411c9b684eb9c48386  node_exporter-1.1.2.netbsd-amd64.tar.gz)
+skipping: [weltonauto.com] => (item=a99ab2cdc62db25ff01d184e21ad433e3949cd791fc2c80b6bacc6b90d5a62c2  node_exporter-1.1.2.linux-mips.tar.gz)
+skipping: [git.weltonauto.com] => (item=22d9c2a5363502c79e0645ba02eafd9561b33d1e0e819ce4df3fcf7dc96e3792  node_exporter-1.1.2.linux-mips64.tar.gz)
+skipping: [app.weltonauto.com] => (item=41892e451e80160491a1cc7bbe6bccd6cb842ae8340e1bc6e32f72cefb1aee80  node_exporter-1.1.2.linux-armv5.tar.gz)
+skipping: [weltonauto.com] => (item=22d9c2a5363502c79e0645ba02eafd9561b33d1e0e819ce4df3fcf7dc96e3792  node_exporter-1.1.2.linux-mips64.tar.gz)
+skipping: [sql01.weltonauto.com] => (item=d81f86f57a4ed167a4062aa47f8a70b35c146c86bc8e40924c9d1fc3644ec8e6  node_exporter-1.1.2.openbsd-amd64.tar.gz)
+skipping: [git.weltonauto.com] => (item=a66b70690c3c4fff953905a041c74834f96be85a806e74a1cc925e607ef50a26  node_exporter-1.1.2.linux-mips64le.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=6007420f425d08626c05de2dbe0e8bb785a16bba1b02c01cb06d37d7fab3bc97  node_exporter-1.1.2.linux-s390x.tar.gz)
+skipping: [weltonauto.com] => (item=a66b70690c3c4fff953905a041c74834f96be85a806e74a1cc925e607ef50a26  node_exporter-1.1.2.linux-mips64le.tar.gz)
+skipping: [git.weltonauto.com] => (item=f7fba791cbc758b021d0e9a2400c82d1f29337e568ab00edc84b053ca467ea3c  node_exporter-1.1.2.linux-mipsle.tar.gz)
+skipping: [weltonauto.com] => (item=f7fba791cbc758b021d0e9a2400c82d1f29337e568ab00edc84b053ca467ea3c  node_exporter-1.1.2.linux-mipsle.tar.gz)
+skipping: [app.weltonauto.com] => (item=1cc1bf4cacb84d6c228d9ce8045b5b00b73afd954046f7b2add428a04d14daee  node_exporter-1.1.2.linux-armv6.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=0596e9c1cc358e6fcc60cb83f0d1ba9a37ccee11eca035429c9791c0beb04389  node_exporter-1.1.2.netbsd-386.tar.gz)
+skipping: [app.weltonauto.com] => (item=a9fe816eb7b976b1587d6d654c437f7d78349f70686fa22ae33e94fe84281af2  node_exporter-1.1.2.linux-armv7.tar.gz)
+skipping: [weltonauto.com] => (item=294c0b05dff4f368512449de7268e3f06de679a9343e9885044adc702865080b  node_exporter-1.1.2.linux-ppc64.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=46c964efd336f0e35f62c739ce9edf5409911e7652604e411c9b684eb9c48386  node_exporter-1.1.2.netbsd-amd64.tar.gz)
+skipping: [git.weltonauto.com] => (item=294c0b05dff4f368512449de7268e3f06de679a9343e9885044adc702865080b  node_exporter-1.1.2.linux-ppc64.tar.gz)
+skipping: [weltonauto.com] => (item=d1d201b16d757980db654bb9e448ab0c81ca4c2715243c3fa4305bef5967bd41  node_exporter-1.1.2.linux-ppc64le.tar.gz)
+skipping: [sql02.weltonauto.com] => (item=d81f86f57a4ed167a4062aa47f8a70b35c146c86bc8e40924c9d1fc3644ec8e6  node_exporter-1.1.2.openbsd-amd64.tar.gz)
+skipping: [app.weltonauto.com] => (item=a99ab2cdc62db25ff01d184e21ad433e3949cd791fc2c80b6bacc6b90d5a62c2  node_exporter-1.1.2.linux-mips.tar.gz)
+skipping: [git.weltonauto.com] => (item=d1d201b16d757980db654bb9e448ab0c81ca4c2715243c3fa4305bef5967bd41  node_exporter-1.1.2.linux-ppc64le.tar.gz)
+skipping: [weltonauto.com] => (item=6007420f425d08626c05de2dbe0e8bb785a16bba1b02c01cb06d37d7fab3bc97  node_exporter-1.1.2.linux-s390x.tar.gz)
+skipping: [app.weltonauto.com] => (item=22d9c2a5363502c79e0645ba02eafd9561b33d1e0e819ce4df3fcf7dc96e3792  node_exporter-1.1.2.linux-mips64.tar.gz)
+skipping: [git.weltonauto.com] => (item=6007420f425d08626c05de2dbe0e8bb785a16bba1b02c01cb06d37d7fab3bc97  node_exporter-1.1.2.linux-s390x.tar.gz)
+skipping: [runner.weltonauto.com] => (item=3919266f1dbad5f7e5ce7b4207057fc253a8322f570607cc0f3e73f4a53338e3  node_exporter-1.1.2.darwin-amd64.tar.gz)
+skipping: [weltonauto.com] => (item=0596e9c1cc358e6fcc60cb83f0d1ba9a37ccee11eca035429c9791c0beb04389  node_exporter-1.1.2.netbsd-386.tar.gz)
+skipping: [git.weltonauto.com] => (item=0596e9c1cc358e6fcc60cb83f0d1ba9a37ccee11eca035429c9791c0beb04389  node_exporter-1.1.2.netbsd-386.tar.gz)
+skipping: [runner.weltonauto.com] => (item=5b0195e203dedd3a8973cd1894a55097554a4af6d8f4f0614c2c67d6670ea8ae  node_exporter-1.1.2.linux-386.tar.gz)
+skipping: [app.weltonauto.com] => (item=a66b70690c3c4fff953905a041c74834f96be85a806e74a1cc925e607ef50a26  node_exporter-1.1.2.linux-mips64le.tar.gz)
+skipping: [git.weltonauto.com] => (item=46c964efd336f0e35f62c739ce9edf5409911e7652604e411c9b684eb9c48386  node_exporter-1.1.2.netbsd-amd64.tar.gz)
+skipping: [weltonauto.com] => (item=46c964efd336f0e35f62c739ce9edf5409911e7652604e411c9b684eb9c48386  node_exporter-1.1.2.netbsd-amd64.tar.gz)
+ok: [runner.weltonauto.com] => (item=8c1f6a317457a658e0ae68ad710f6b4098db2cad10204649b51e3c043aa3e70d  node_exporter-1.1.2.linux-amd64.tar.gz)
+skipping: [git.weltonauto.com] => (item=d81f86f57a4ed167a4062aa47f8a70b35c146c86bc8e40924c9d1fc3644ec8e6  node_exporter-1.1.2.openbsd-amd64.tar.gz)
+skipping: [weltonauto.com] => (item=d81f86f57a4ed167a4062aa47f8a70b35c146c86bc8e40924c9d1fc3644ec8e6  node_exporter-1.1.2.openbsd-amd64.tar.gz)
+skipping: [app.weltonauto.com] => (item=f7fba791cbc758b021d0e9a2400c82d1f29337e568ab00edc84b053ca467ea3c  node_exporter-1.1.2.linux-mipsle.tar.gz)
+skipping: [runner.weltonauto.com] => (item=eb5e7d16f18bb3272d0d832986fc8ac6cb0b6c42d487c94e15dabb10feae8e04  node_exporter-1.1.2.linux-arm64.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=3919266f1dbad5f7e5ce7b4207057fc253a8322f570607cc0f3e73f4a53338e3  node_exporter-1.1.2.darwin-amd64.tar.gz)
+skipping: [runner.weltonauto.com] => (item=41892e451e80160491a1cc7bbe6bccd6cb842ae8340e1bc6e32f72cefb1aee80  node_exporter-1.1.2.linux-armv5.tar.gz)
+skipping: [app.weltonauto.com] => (item=294c0b05dff4f368512449de7268e3f06de679a9343e9885044adc702865080b  node_exporter-1.1.2.linux-ppc64.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=5b0195e203dedd3a8973cd1894a55097554a4af6d8f4f0614c2c67d6670ea8ae  node_exporter-1.1.2.linux-386.tar.gz)
+skipping: [runner.weltonauto.com] => (item=1cc1bf4cacb84d6c228d9ce8045b5b00b73afd954046f7b2add428a04d14daee  node_exporter-1.1.2.linux-armv6.tar.gz)
+skipping: [app.weltonauto.com] => (item=d1d201b16d757980db654bb9e448ab0c81ca4c2715243c3fa4305bef5967bd41  node_exporter-1.1.2.linux-ppc64le.tar.gz)
+skipping: [runner.weltonauto.com] => (item=a9fe816eb7b976b1587d6d654c437f7d78349f70686fa22ae33e94fe84281af2  node_exporter-1.1.2.linux-armv7.tar.gz)
+skipping: [runner.weltonauto.com] => (item=a99ab2cdc62db25ff01d184e21ad433e3949cd791fc2c80b6bacc6b90d5a62c2  node_exporter-1.1.2.linux-mips.tar.gz)
+skipping: [app.weltonauto.com] => (item=6007420f425d08626c05de2dbe0e8bb785a16bba1b02c01cb06d37d7fab3bc97  node_exporter-1.1.2.linux-s390x.tar.gz)
+ok: [monitoring.weltonauto.com] => (item=8c1f6a317457a658e0ae68ad710f6b4098db2cad10204649b51e3c043aa3e70d  node_exporter-1.1.2.linux-amd64.tar.gz)
+skipping: [runner.weltonauto.com] => (item=22d9c2a5363502c79e0645ba02eafd9561b33d1e0e819ce4df3fcf7dc96e3792  node_exporter-1.1.2.linux-mips64.tar.gz)
+skipping: [runner.weltonauto.com] => (item=a66b70690c3c4fff953905a041c74834f96be85a806e74a1cc925e607ef50a26  node_exporter-1.1.2.linux-mips64le.tar.gz)
+skipping: [app.weltonauto.com] => (item=0596e9c1cc358e6fcc60cb83f0d1ba9a37ccee11eca035429c9791c0beb04389  node_exporter-1.1.2.netbsd-386.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=eb5e7d16f18bb3272d0d832986fc8ac6cb0b6c42d487c94e15dabb10feae8e04  node_exporter-1.1.2.linux-arm64.tar.gz)
+skipping: [runner.weltonauto.com] => (item=f7fba791cbc758b021d0e9a2400c82d1f29337e568ab00edc84b053ca467ea3c  node_exporter-1.1.2.linux-mipsle.tar.gz)
+skipping: [app.weltonauto.com] => (item=46c964efd336f0e35f62c739ce9edf5409911e7652604e411c9b684eb9c48386  node_exporter-1.1.2.netbsd-amd64.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=41892e451e80160491a1cc7bbe6bccd6cb842ae8340e1bc6e32f72cefb1aee80  node_exporter-1.1.2.linux-armv5.tar.gz)
+skipping: [runner.weltonauto.com] => (item=294c0b05dff4f368512449de7268e3f06de679a9343e9885044adc702865080b  node_exporter-1.1.2.linux-ppc64.tar.gz)
+skipping: [runner.weltonauto.com] => (item=d1d201b16d757980db654bb9e448ab0c81ca4c2715243c3fa4305bef5967bd41  node_exporter-1.1.2.linux-ppc64le.tar.gz)
+skipping: [app.weltonauto.com] => (item=d81f86f57a4ed167a4062aa47f8a70b35c146c86bc8e40924c9d1fc3644ec8e6  node_exporter-1.1.2.openbsd-amd64.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=1cc1bf4cacb84d6c228d9ce8045b5b00b73afd954046f7b2add428a04d14daee  node_exporter-1.1.2.linux-armv6.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=a9fe816eb7b976b1587d6d654c437f7d78349f70686fa22ae33e94fe84281af2  node_exporter-1.1.2.linux-armv7.tar.gz)
+skipping: [runner.weltonauto.com] => (item=6007420f425d08626c05de2dbe0e8bb785a16bba1b02c01cb06d37d7fab3bc97  node_exporter-1.1.2.linux-s390x.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=a99ab2cdc62db25ff01d184e21ad433e3949cd791fc2c80b6bacc6b90d5a62c2  node_exporter-1.1.2.linux-mips.tar.gz)
+skipping: [runner.weltonauto.com] => (item=0596e9c1cc358e6fcc60cb83f0d1ba9a37ccee11eca035429c9791c0beb04389  node_exporter-1.1.2.netbsd-386.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=22d9c2a5363502c79e0645ba02eafd9561b33d1e0e819ce4df3fcf7dc96e3792  node_exporter-1.1.2.linux-mips64.tar.gz)
+skipping: [runner.weltonauto.com] => (item=46c964efd336f0e35f62c739ce9edf5409911e7652604e411c9b684eb9c48386  node_exporter-1.1.2.netbsd-amd64.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=a66b70690c3c4fff953905a041c74834f96be85a806e74a1cc925e607ef50a26  node_exporter-1.1.2.linux-mips64le.tar.gz)
+skipping: [runner.weltonauto.com] => (item=d81f86f57a4ed167a4062aa47f8a70b35c146c86bc8e40924c9d1fc3644ec8e6  node_exporter-1.1.2.openbsd-amd64.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=f7fba791cbc758b021d0e9a2400c82d1f29337e568ab00edc84b053ca467ea3c  node_exporter-1.1.2.linux-mipsle.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=294c0b05dff4f368512449de7268e3f06de679a9343e9885044adc702865080b  node_exporter-1.1.2.linux-ppc64.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=d1d201b16d757980db654bb9e448ab0c81ca4c2715243c3fa4305bef5967bd41  node_exporter-1.1.2.linux-ppc64le.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=6007420f425d08626c05de2dbe0e8bb785a16bba1b02c01cb06d37d7fab3bc97  node_exporter-1.1.2.linux-s390x.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=0596e9c1cc358e6fcc60cb83f0d1ba9a37ccee11eca035429c9791c0beb04389  node_exporter-1.1.2.netbsd-386.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=46c964efd336f0e35f62c739ce9edf5409911e7652604e411c9b684eb9c48386  node_exporter-1.1.2.netbsd-amd64.tar.gz)
+skipping: [monitoring.weltonauto.com] => (item=d81f86f57a4ed167a4062aa47f8a70b35c146c86bc8e40924c9d1fc3644ec8e6  node_exporter-1.1.2.openbsd-amd64.tar.gz)
+
+TASK [install_ne : Create the node_exporter group] *********************
+changed: [sql01.weltonauto.com]
+changed: [app.weltonauto.com]
+changed: [weltonauto.com]
+changed: [sql02.weltonauto.com]
+changed: [git.weltonauto.com]
+changed: [runner.weltonauto.com]
+changed: [monitoring.weltonauto.com]
+
+TASK [install_ne : Create the node_exporter user] **********************
+changed: [sql01.weltonauto.com]
+changed: [app.weltonauto.com]
+changed: [sql02.weltonauto.com]
+changed: [weltonauto.com]
+changed: [git.weltonauto.com]
+changed: [runner.weltonauto.com]
+changed: [monitoring.weltonauto.com]
+
+TASK [install_ne : Download node_exporter binary to local folder] ******
+ok: [sql01.weltonauto.com]
+ok: [git.weltonauto.com]
+ok: [weltonauto.com]
+ok: [app.weltonauto.com]
+ok: [sql02.weltonauto.com]
+ok: [monitoring.weltonauto.com]
+ok: [runner.weltonauto.com]
+
+TASK [install_ne : Unpack node_exporter binary] ************************
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Propagate node_exporter binaries] *******************
+changed: [sql01.weltonauto.com]
+changed: [git.weltonauto.com]
+changed: [sql02.weltonauto.com]
+changed: [app.weltonauto.com]
+changed: [weltonauto.com]
+changed: [monitoring.weltonauto.com]
+changed: [runner.weltonauto.com]
+
+TASK [install_ne : propagate locally distributed node_exporter binary] *
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Install selinux python packages [RHEL]] *************
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Install selinux python packages [Fedora]] ***********
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Install selinux python packages [clearlinux]] *******
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Copy the node_exporter systemd service file] ********
+changed: [sql01.weltonauto.com]
+changed: [app.weltonauto.com]
+changed: [sql02.weltonauto.com]
+changed: [weltonauto.com]
+changed: [git.weltonauto.com]
+changed: [runner.weltonauto.com]
+changed: [monitoring.weltonauto.com]
+
+TASK [install_ne : Create node_exporter config directory] **************
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Copy the node_exporter config file] *****************
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Create textfile collector dir] **********************
+changed: [sql01.weltonauto.com]
+changed: [git.weltonauto.com]
+changed: [app.weltonauto.com]
+changed: [weltonauto.com]
+changed: [sql02.weltonauto.com]
+changed: [runner.weltonauto.com]
+changed: [monitoring.weltonauto.com]
+
+TASK [install_ne : Allow node_exporter port in SELinux on RedHat OS family] ******
+skipping: [sql01.weltonauto.com]
+skipping: [sql02.weltonauto.com]
+skipping: [weltonauto.com]
+skipping: [app.weltonauto.com]
+skipping: [git.weltonauto.com]
+skipping: [runner.weltonauto.com]
+skipping: [monitoring.weltonauto.com]
+
+TASK [install_ne : Ensure Node Exporter is enabled on boot] ************
+changed: [sql01.weltonauto.com]
+changed: [sql02.weltonauto.com]
+changed: [app.weltonauto.com]
+changed: [weltonauto.com]
+changed: [git.weltonauto.com]
+changed: [runner.weltonauto.com]
+changed: [monitoring.weltonauto.com]
+
+RUNNING HANDLER [install_ne : restart node_exporter] *******************
+changed: [sql01.weltonauto.com]
+changed: [sql02.weltonauto.com]
+changed: [git.weltonauto.com]
+changed: [app.weltonauto.com]
+changed: [weltonauto.com]
+changed: [runner.weltonauto.com]
+changed: [monitoring.weltonauto.com]
+
+PLAY RECAP *************************************************************
+app.weltonauto.com         : ok=15   changed=7    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
+git.weltonauto.com         : ok=15   changed=7    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
+monitoring.weltonauto.com  : ok=15   changed=7    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
+runner.weltonauto.com      : ok=15   changed=7    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
+sql01.weltonauto.com       : ok=16   changed=7    unreachable=0    failed=0    skipped=16   rescued=0    ignored=0
+sql02.weltonauto.com       : ok=15   changed=7    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
+weltonauto.com             : ok=15   changed=7    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
+````
+
+
+
