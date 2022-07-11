@@ -238,6 +238,8 @@ weltonauto.com             : ok=22   changed=20   unreachable=0    failed=0    s
 
 4. Для установки кластера mysql используем плейбук ansible/mysql.yml. Он устанавливает на две наших виртуальных машины mysql сервера и собирает кластер master->slave. Так же добавляется пустая база wordpress для нашего проекта Wordpress, добавляется пользователь wordpress \ wordpress с полными правами на базу.
 
+
+<details><summary>Вывод ansible-playbook</summary>
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/mysql.yml -i ../ansible/hosts
 
@@ -466,6 +468,7 @@ PLAY RECAP *********************************************************************
 sql01.weltonauto.com       : ok=42   changed=15   unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
 sql02.weltonauto.com       : ok=45   changed=16   unreachable=0    failed=0    skipped=11   rescued=0    ignored=0
 ```
+</details>
 
 После установки зайдем в консоль sql и посмотрим на работоспособность реплики и наличие базы на мастер сервере.
 
@@ -477,6 +480,7 @@ sql02.weltonauto.com       : ok=45   changed=16   unreachable=0    failed=0    s
 
 5. Для установки Wordpress на наш сервер приложений используем плейбук ansible/app.yml. Он сочетает 4 роли, nginx, memcache, php7, wordpress. Все это дело устанавливается на сервер. 
 
+<details><summary>Вывод ansible-playbook</summary>
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/app.yml -i ../ansible/hosts
 
@@ -527,7 +531,7 @@ changed: [app.weltonauto.com]
 PLAY RECAP ********************************************************************************
 app.weltonauto.com         : ok=14   changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
-
+</details>
 
 После установки можно зайти на него по адресу https://www.weltonauto.com и увидеть приветственную страницу Wordpress.
 
@@ -537,41 +541,64 @@ app.weltonauto.com         : ok=14   changed=2    unreachable=0    failed=0    s
 
 6. Устанавливаем gitlab и gitlab-runner. Первым делом устанавливаем gitlab. Для этого выполняем плейбук ansible/gitlab.yml.
 
+<details><summary>Вывод ansible-playbook</summary>
 ```
+myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/gitlab.yml -i ../ansible/hosts
+
+PLAY [gitlab] ***************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ******************************************************************************************************************************************************************************************
+ok: [git.weltonauto.com]
+
+TASK [gitlab : Include OS-specific variables.] ******************************************************************************************************************************************************************
+ok: [git.weltonauto.com]
+
+TASK [gitlab : Upgrade system] **********************************************************************************************************************************************************************************
 changed: [git.weltonauto.com]
 
-TASK [gitlab : Install GitLab dependencies (Debian).] *******************************
+TASK [gitlab : Check if GitLab configuration file already exists.] **********************************************************************************************************************************************
+ok: [git.weltonauto.com]
+
+TASK [gitlab : Check if GitLab is already installed.] ***********************************************************************************************************************************************************
+ok: [git.weltonauto.com]
+
+TASK [gitlab : Install GitLab dependencies.] ********************************************************************************************************************************************************************
 changed: [git.weltonauto.com]
 
-TASK [gitlab : Download GitLab repository installation script.] *********************
+TASK [gitlab : Install GitLab dependencies (Debian).] ***********************************************************************************************************************************************************
 changed: [git.weltonauto.com]
 
-TASK [gitlab : Install GitLab repository.] ******************************************
+TASK [gitlab : Download GitLab repository installation script.] *************************************************************************************************************************************************
 changed: [git.weltonauto.com]
 
-TASK [gitlab : Define the Gitlab package name.] *************************************
+TASK [gitlab : Install GitLab repository.] **********************************************************************************************************************************************************************
+changed: [git.weltonauto.com]
+
+TASK [gitlab : Define the Gitlab package name.] *****************************************************************************************************************************************************************
 skipping: [git.weltonauto.com]
 
-TASK [gitlab : Install GitLab] ******************************************************
+TASK [gitlab : Install GitLab] **********************************************************************************************************************************************************************************
 changed: [git.weltonauto.com]
 
-TASK [gitlab : Reconfigure GitLab (first run).] *************************************
+TASK [gitlab : Reconfigure GitLab (first run).] *****************************************************************************************************************************************************************
 changed: [git.weltonauto.com]
 
-TASK [gitlab : Create GitLab SSL configuration folder.] *****************************
+TASK [gitlab : Create GitLab SSL configuration folder.] *********************************************************************************************************************************************************
 skipping: [git.weltonauto.com]
 
-TASK [gitlab : Create self-signed certificate.] *************************************
+TASK [gitlab : Create self-signed certificate.] *****************************************************************************************************************************************************************
 skipping: [git.weltonauto.com]
 
-TASK [gitlab : Copy GitLab configuration file.] *************************************
+TASK [gitlab : Copy GitLab configuration file.] *****************************************************************************************************************************************************************
 changed: [git.weltonauto.com]
 
-RUNNING HANDLER [gitlab : restart gitlab] *******************************************
+RUNNING HANDLER [gitlab : restart gitlab] ***********************************************************************************************************************************************************************
 changed: [git.weltonauto.com]
 
-PLAY RECAP **************************************************************************
+PLAY RECAP ******************************************************************************************************************************************************************************************************
+git.weltonauto.com         : ok=13   changed=9    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0
 ```
+</details>
 
 Далее проводим первичную настройку проекта. Создаем проект, получаем токен для gitlabrunner'a. Далее нужно вписать его в конфиг.
 
@@ -581,6 +608,7 @@ PLAY RECAP *********************************************************************
 
 Запускаем установку gitlab-runner. Для этого надо запустить ansible/gitlab-runner.yml
 
+<details><summary>Вывод ansible-playbook</summary>
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/runner.yml -i ../ansible/hosts
 
@@ -1198,8 +1226,8 @@ skipping: [runner.weltonauto.com]
 
 PLAY RECAP **************************************************************************
 runner.weltonauto.com      : ok=82   changed=19   unreachable=0    failed=0    skipped=110  rescued=0    ignored=0
-
 ```
+</details>
 
 
 В результате мы полчаем настроенный проект на сервере gitlab и сервер где запущен gitlab-runner.
@@ -1208,7 +1236,7 @@ runner.weltonauto.com      : ok=82   changed=19   unreachable=0    failed=0    s
 
 7. Устанавливаем мониторинг всего проекта. Для этого нужно применить два плейбука. Первый ansible/monitoring.yml устанавливает prometheus, grafana, alertmanager.
 
-
+<details><summary>Вывод ansible-playbook</summary>
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/monitoring.yml -i ../ansible/hosts
 
@@ -1334,9 +1362,11 @@ ok: [monitoring.weltonauto.com]
 PLAY RECAP ****************************************************************
 monitoring.weltonauto.com  : ok=24   changed=2    unreachable=0    failed=0    skipped=10   rescued=0    ignored=0
 ```
+</details>
 
 Далее устанавливаем на все сервера NodeExporter. Для этого запускаем плейбук anisble/ne.yml
 
+<details><summary>Вывод ansible-playbook</summary>
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/ne.yml -i ../ansible/hosts
 
@@ -1768,6 +1798,6 @@ sql01.weltonauto.com       : ok=16   changed=7    unreachable=0    failed=0    s
 sql02.weltonauto.com       : ok=15   changed=7    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
 weltonauto.com             : ok=15   changed=7    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
 ````
-
+</details>
 
 
