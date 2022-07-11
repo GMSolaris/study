@@ -530,4 +530,4 @@ app.weltonauto.com         : ok=14   changed=2    unreachable=0    failed=0    s
 
 ![alt text](img/5/wordpress2.png "wp2")
 
-![alt text](img/4/wordpress.png "wp")
+![alt text](img/5/wordpress.png "wp")
