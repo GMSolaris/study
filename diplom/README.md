@@ -1266,6 +1266,8 @@ deploy-job:
 	- ssh -o StrictHostKeyChecking=no myagkikh@app.weltonauto.com sudo chown www-data /var/www/wordpress/ -R
     - echo "delivery complete"
 ```
+Также необходимо для корректной работы деплоя добавить в проекте в разделе Настройки -> CI\CD -> Variables переменную SSH_PRIVATE_KEY - В тело переменной нужно добавить наш приватный ключ, публичный ключ от которого мы использовали для добавления на все сервера в начале.
+
 
 После этого любой коммит в репозиторий с тегом вида v1.0.0 будет запускать сборку и доставку кода на наш сервер с Wordpress. 
 
