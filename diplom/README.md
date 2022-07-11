@@ -240,6 +240,7 @@ weltonauto.com             : ok=22   changed=20   unreachable=0    failed=0    s
 
 
 <details><summary>Вывод ansible-playbook</summary>
+
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/mysql.yml -i ../ansible/hosts
 
