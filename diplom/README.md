@@ -1236,6 +1236,40 @@ runner.weltonauto.com      : ok=82   changed=19   unreachable=0    failed=0    s
 
 В результате мы полчаем настроенный проект на сервере gitlab и сервер где запущен gitlab-runner.
 
+Далее добавляем в проект произвольный файл 1.html и файл деплоя gitlab-ci.yml.
+```
+before_script:
+  - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+  - eval $(ssh-agent -s)
+  - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add -
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+
+stages:         
+  - deploy
+
+deploy-job:      
+  stage: deploy
+  only:
+    variables:
+      - $CI_COMMIT_TAG =~ /v(\d+\.\d+\.\d+)/
+
+  script:
+    - echo "start delivery" 
+    - ssh -o StrictHostKeyChecking=no myagkikh@app.weltonauto.com sudo chown myagkikh -R /var/www/wordpress/
+    - rsync -vz -e "ssh -o StrictHostKeyChecking=no" ./* myagkikh@app.weltonauto.com:/var/www/wordpress/
+    - echo "remove .git repo from host"
+	- ssh -o StrictHostKeyChecking=no myagkikh@app.weltonauto.com rm -rf /var/www/wordpress/.git
+    - echo "set www-data rigths"
+	- ssh -o StrictHostKeyChecking=no myagkikh@app.weltonauto.com sudo chown www-data /var/www/wordpress/ -R
+    - echo "delivery complete"
+```
+
+После этого любой коммит в репозиторий с тегом вида v1.0.0 будет запускать сборку и доставку кода на наш сервер с Wordpress. 
+
+![alt text](img/6/deploy.png "deploy")
+
+![alt text](img/6/deploy_success.png "deploy")
 
 
 7. Устанавливаем мониторинг всего проекта. Для этого нужно применить два плейбука. Первый ansible/monitoring.yml устанавливает prometheus, grafana, alertmanager.
@@ -1805,5 +1839,31 @@ sql02.weltonauto.com       : ok=15   changed=7    unreachable=0    failed=0    s
 weltonauto.com             : ok=15   changed=7    unreachable=0    failed=0    skipped=14   rescued=0    ignored=0
 ````
 </details>
+
+В результате этого получаем три сервера мониторинга.
+
+Собственно сам сервер сбора информации - Prometheus с подключенными к нему источниками данных.
+
+![alt text](img/7/prometheus.png "prometheus")
+
+Сервер визуализации мониторинга - Grafana.
+
+![alt text](img/7/grafana.png "grafana")
+
+Авторизуемся в неё и подключаем prometheus как источник данных для дашбордов.
+
+![alt text](img/7/datasource.png "data")
+
+Имопортируем из папки grafana для шаблона.
+
+![alt text](img/7/ne_dashboard.png "ne")
+
+И получаем визуализацию мониторинга всех наших серверов.
+
+![alt text](img/7/grafana_dashboards.png "dash")
+
+Третий сервер мониторинга это Alertmanager. Он настроен на все alert и при выключении одного из серверов создает alert. Дальше его можно направить на почту или в telegram (все зависит от вашей фантазии и настроек).
+
+![alt text](img/7/alertmanager.png "deploy")
 
 
