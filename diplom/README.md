@@ -1263,7 +1263,7 @@ deploy-job:
     - echo "remove .git repo from host"
 	- ssh -o StrictHostKeyChecking=no myagkikh@app.weltonauto.com rm -rf /var/www/wordpress/.git
     - echo "set www-data rigths"
-	- ssh -o StrictHostKeyChecking=no myagkikh@app.weltonauto.com sudo chown www-data /var/www/wordpress/ -R
+	- ssh -o StrictHostKeyChecking=no myagkikh@app.weltonauto.com sudo chown www-data -R /var/www/wordpress/ 
     - echo "delivery complete"
 ```
 Также необходимо для корректной работы деплоя добавить в проекте в разделе Настройки -> CI\CD -> Variables переменную SSH_PRIVATE_KEY - В тело переменной нужно добавить наш приватный ключ, публичный ключ от которого мы использовали для добавления на все сервера в начале.
@@ -1866,7 +1866,7 @@ weltonauto.com             : ok=15   changed=7    unreachable=0    failed=0    s
 
 ![alt text](img/7/grafana_dashboards.png "dash")
 
-Третий сервер мониторинга это Alertmanager. Он настроен на все alert и при выключении одного из серверов создает alert. Дальше его можно направить на почту или в telegram (все зависит от вашей фантазии и настроек).
+Третий сервер мониторинга это Alertmanager. Он настроен на все alert и, например, при выключении одного из серверов создает alert. Дальше его можно направить на почту или в telegram (все зависит от вашей фантазии и настроек).
 
 ![alt text](img/7/alertmanager.png "deploy")
 
