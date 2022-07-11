@@ -482,6 +482,7 @@ sql02.weltonauto.com       : ok=45   changed=16   unreachable=0    failed=0    s
 5. Для установки Wordpress на наш сервер приложений используем плейбук ansible/app.yml. Он сочетает 4 роли, nginx, memcache, php7, wordpress. Все это дело устанавливается на сервер. 
 
 <details><summary>Вывод ansible-playbook</summary>
+
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/app.yml -i ../ansible/hosts
 
@@ -543,6 +544,7 @@ app.weltonauto.com         : ok=14   changed=2    unreachable=0    failed=0    s
 6. Устанавливаем gitlab и gitlab-runner. Первым делом устанавливаем gitlab. Для этого выполняем плейбук ansible/gitlab.yml.
 
 <details><summary>Вывод ansible-playbook</summary>
+
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/gitlab.yml -i ../ansible/hosts
 
@@ -610,6 +612,7 @@ git.weltonauto.com         : ok=13   changed=9    unreachable=0    failed=0    s
 Запускаем установку gitlab-runner. Для этого надо запустить ansible/gitlab-runner.yml
 
 <details><summary>Вывод ansible-playbook</summary>
+
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/runner.yml -i ../ansible/hosts
 
@@ -1238,6 +1241,7 @@ runner.weltonauto.com      : ok=82   changed=19   unreachable=0    failed=0    s
 7. Устанавливаем мониторинг всего проекта. Для этого нужно применить два плейбука. Первый ansible/monitoring.yml устанавливает prometheus, grafana, alertmanager.
 
 <details><summary>Вывод ansible-playbook</summary>
+
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/monitoring.yml -i ../ansible/hosts
 
@@ -1368,6 +1372,7 @@ monitoring.weltonauto.com  : ok=24   changed=2    unreachable=0    failed=0    s
 Далее устанавливаем на все сервера NodeExporter. Для этого запускаем плейбук anisble/ne.yml
 
 <details><summary>Вывод ansible-playbook</summary>
+
 ```
 myagkikh@netology:~/devops_dip/tf$ ansible-playbook ../ansible/ne.yml -i ../ansible/hosts
 
