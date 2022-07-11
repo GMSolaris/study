@@ -1234,7 +1234,9 @@ runner.weltonauto.com      : ok=82   changed=19   unreachable=0    failed=0    s
 </details>
 
 
-В результате мы полчаем настроенный проект на сервере gitlab и сервер где запущен gitlab-runner.
+В результате мы получаем настроенный проект на сервере gitlab и сервер где запущен gitlab-runner.
+
+![alt text](img/6/runner.png "runner")
 
 Далее добавляем в проект произвольный файл 1.html и файл деплоя gitlab-ci.yml.
 ```
