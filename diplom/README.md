@@ -1858,7 +1858,7 @@ weltonauto.com             : ok=15   changed=7    unreachable=0    failed=0    s
 
 ![alt text](img/7/datasource.png "data")
 
-Имопортируем из папки grafana два шаблона.
+Импортируем из папки grafana два шаблона.
 
 ![alt text](img/7/ne_dashboard.png "ne")
 
